@@ -1,0 +1,115 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [116.4074, 39.9042]
+      },
+      "properties": {
+        "City": "北京市",
+        "Count": 1245
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [116.4174, 39.9142]
+      },
+      "properties": {
+        "City": "北京市",
+        "Count": 876
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [121.4737, 31.2304]
+      },
+      "properties": {
+        "City": "上海市",
+        "Count": 1567
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [121.4837, 31.2404]
+      },
+      "properties": {
+        "City": "上海市",
+        "Count": 982
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [113.6654, 34.7579]
+      },
+      "properties": {
+        "City": "郑州市",
+        "Count": 763
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [113.6754, 34.7679]
+      },
+      "properties": {
+        "City": "郑州市",
+        "Count": 431
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [114.0579, 22.5431]
+      },
+      "properties": {
+        "City": "深圳市",
+        "Count": 1892
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [114.0679, 22.5531]
+      },
+      "properties": {
+        "City": "深圳市",
+        "Count": 1234
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [113.2644, 23.1291]
+      },
+      "properties": {
+        "City": "广州市",
+        "Count": 1456
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [113.2744, 23.1391]
+      },
+      "properties": {
+        "City": "广州市",
+        "Count": 987
+      }
+    }
+  ]
+}

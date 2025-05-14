@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <title>地理大数据下载平台</title>
@@ -8,19 +8,37 @@
   <style>
     #map { width: 100%; height: 600px; }
     #controls { margin-top: 1em; }
+    .sidebar {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      width: 220px;
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      z-index: 1000;
+    }
   </style>
 </head>
 <body>
   <h2>空间数据展示</h2>
   <div id="map"></div>
 
-  <div id="controls">
-    <label for="query">属性查询：</label>
-    <input type="text" id="query" placeholder="输入名称" />
-    <button onclick="searchFeature()">查询</button>
-
+  <!-- 侧边栏：城市选择器 -->
+  <div class="sidebar">
+    <h3>城市选择</h3>
+    <select id="citySelector" class="form-control" style="width: 100%; margin-bottom: 10px;"></select>
+    
+    <div class="info-panel">
+      <h4>数据统计</h4>
+      <p id="totalPoints">总签到数：--</p>
+      <p id="currentCity">当前城市：--</p>
+      <p id="cityPoints">城市签到数：--</p>
+    </div>
+    
     <p>
-      <a href="https://your-link.com/data-download" target="_blank">📥 下载完整数据集</a>
+      <a href="https://pan.baidu.com/s/1xBKTt0Z3g5lAUT3Bsus3_A?pwd=1111" target="_blank">📥 下载完整数据集</a>
     </p>
   </div>
 
