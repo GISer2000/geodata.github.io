@@ -42,12 +42,12 @@ fetch('data/dataset.geojson')
     }, 0);
     
     // 更新统计信息
-    document.getElementById('totalPoints').textContent = `总签到点：${totalCount}`;
+    document.getElementById('totalPoints').textContent = `总签到数：${totalCount}`;
 
     // 默认样式函数（使用大写的 "Count" 字段）
     const defaultStyle = feature => {
       const count = feature.get('Count') || 1;
-      const radius = Math.max(5, Math.sqrt(count) * 2);
+      const radius = 0.5;
       
       return new ol.style.Style({
         image: new ol.style.Circle({
@@ -133,17 +133,17 @@ function searchFeature(cityName) {
   matchedFeatures.forEach(f => {
     f.setStyle(new ol.style.Style({
       image: new ol.style.Circle({
-        radius: 10,
+        radius: 1,
         fill: new ol.style.Fill({ color: 'rgba(255, 0, 0, 0.8)' }),
         stroke: new ol.style.Stroke({ color: 'red', width: 2 })
       }),
-      text: new ol.style.Text({
-        text: `${f.get('City')} (${f.get('Count') || 0})`,
-        font: '14px Arial bold',
-        fill: new ol.style.Fill({ color: 'red' }),
-        offsetY: -18,
-        textAlign: 'center'
-      })
+      // text: new ol.style.Text({
+      //   text: `${f.get('City')} (${f.get('Count') || 0})`,
+      //   font: '14px Arial bold',
+      //   fill: new ol.style.Fill({ color: 'red' }),
+      //   offsetY: -18,
+      //   textAlign: 'center'
+      // })
     }));
   });
 
