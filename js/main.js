@@ -74,7 +74,7 @@ fetch('data/dataset.geojson')
   });
 
 // 预设的城市列表（按拼音首字母排序）
-const cities = ['北京市', '广州市', '上海市', '深圳市', '郑州市'];
+const cities = ['北京市', '上海市', '苏州市', '深圳市', '郑州市'];
 
 // 初始化城市选择下拉菜单
 function initCitySelector() {
