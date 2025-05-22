@@ -1,0 +1,19 @@
+[
+  {
+    "id": "od-0",
+    "title": "北京市OD流数据",
+    "type": "OD流",
+    "description": "包含北京市的OD流信息，约121万条记录",
+    "status": "已验证",
+    "size": "139.2MB",
+    "updateTime": "2019",
+    "provider": "百度地图",
+    "tags": ["空间相互作用", "引力模型", "流动空间", "时空行为"],
+    "formats": ["CSV"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1Toz_r6r2_1UhkOWtdEnV2w?pwd=1111",
+    "level": "市级",
+    "city": "北京市"
+  }
+]
