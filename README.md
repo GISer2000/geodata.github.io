@@ -1,8 +1,5 @@
 # GeoDataHub - 地理大数据下载平台
 
-## 访问地址
-https://giser2000.github.io/geodata.github.io/
-
 ## 代码结构
 ```plaintext
 geodata.github.io/

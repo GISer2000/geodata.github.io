@@ -11,7 +11,6 @@
     <link href="https://cdn.jsdelivr.net/npm/ol@7.3.0/ol.css" rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
     
-    <!-- Tailwind 配置 -->
     <script>
         tailwind.config = {
             theme: {
@@ -55,7 +54,6 @@
     </style>
 </head>
 <body class="font-inter bg-light text-dark antialiased">
-    <!-- 导航栏 -->
     <header id="navbar" class="fixed w-full top-0 z-50 transition-all duration-300">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between items-center py-4">
@@ -64,7 +62,6 @@
                     <span class="text-xl font-bold text-primary">GeoDataHub</span>
                 </div>
                 
-                <!-- 桌面导航 -->
                 <nav class="hidden md:flex items-center space-x-8">
                     <a href="#home" class="text-gray-700 hover:text-primary font-medium transition-colors">首页</a>
                     <a href="#datasets" class="text-gray-700 hover:text-primary font-medium transition-colors">数据集</a>
@@ -73,14 +70,12 @@
                     <a href="#download" class="text-gray-700 hover:text-primary font-medium transition-colors">下载中心</a>
                 </nav>
                 
-                <!-- 移动端菜单按钮 -->
                 <button id="menuBtn" class="md:hidden text-gray-700 focus:outline-none">
                     <i class="fa-solid fa-bars text-xl"></i>
                 </button>
             </div>
         </div>
         
-        <!-- 移动端导航菜单 -->
         <div id="mobileMenu" class="hidden md:hidden bg-white shadow-lg absolute w-full">
             <div class="container mx-auto px-4 py-4 space-y-4">
                 <a href="#home" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">首页</a>
@@ -92,7 +87,7 @@
         </div>
     </header>
 
-    <!-- 介绍区域 -->
+    <!-- 总览 -->
     <section id="home" class="pt-28 pb-16 md:pt-40 md:pb-24 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center">
@@ -112,7 +107,6 @@
                         </a>
                     </div>
                     
-                    <!-- 统计数据 -->
                     <div class="flex flex-wrap gap-8 mt-12">
                         <div class="text-center">
                             <div class="text-3xl md:text-4xl font-bold text-primary mb-1">20+</div>
@@ -134,16 +128,14 @@
                         <a href="https://www.nature.com/articles/s42949-024-00141-4" target="_blank">
                         <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs42949-024-00141-4/MediaObjects/42949_2024_141_Fig1_HTML.png?as=webp" alt="地理大数据展示" class="w-full h-auto">
                         <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end">
-                            <!-- <div class="p-6 text-white"> -->
                             <div style="position: absolute; top: 0; left: 0; padding: 12px; color: rgb(0, 0, 0);">
-                                <h3 class="text-xl font-bold mb-2">多源地理数据可视化</h3>
+                                <h3 class="text-xl font-bold mb-2">多源地理数据</h3>
                                 <p class="text-black/90">探索城市空间结构与人类活动模式</p>
                             </div>
                         </div>
                         </a>
                     </div>
                     
-                    <!-- 装饰元素 -->
                     <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-accent/20 rounded-full blur-xl"></div>
                     <div class="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-xl"></div>
                 </div>
@@ -151,19 +143,17 @@
         </div>
     </section>
 
-    <!-- 数据集分类 -->
+    <!-- 数据集 -->
     <section id="datasets" class="section-padding bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">丰富的地理数据集</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">我们提供多种类型的地理空间数据，满足不同领域的研究与应用需求</p>
+                <p class="text-gray-600 max-w-2xl mx-auto">提供多种类型的地理空间数据，满足不同领域的研究与应用需求</p>
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 微博数据卡片 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
                     <div class="h-48 overflow-hidden">
-                        <!-- 使用 fig 目录下的图片 -->
                         <img src="fig/weibo.png" alt="微博数据" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <div class="p-6">
@@ -183,10 +173,8 @@
                     </div>
                 </div>
                 
-                <!-- POI数据卡片 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
                     <div class="h-48 overflow-hidden">
-                        <!-- 使用 fig 目录下的图片 -->
                         <img src="fig/poi.png" alt="POI数据" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <div class="p-6">
@@ -206,10 +194,8 @@
                     </div>
                 </div>
                 
-                <!-- AOI数据卡片 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
                     <div class="h-48 overflow-hidden">
-                        <!-- 使用 fig 目录下的图片 -->
                         <img src="fig/aoi.png" alt="AOI数据" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <div class="p-6">
@@ -229,10 +215,8 @@
                     </div>
                 </div>
                 
-                <!-- 轨迹数据卡片 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
                     <div class="h-48 overflow-hidden">
-                        <!-- 使用 fig 目录下的图片 -->
                         <img src="fig/trajectory.png" alt="轨迹数据" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <div class="p-6">
@@ -252,10 +236,8 @@
                     </div>
                 </div>
                 
-                <!-- OD数据卡片 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
                     <div class="h-48 overflow-hidden">
-                        <!-- 使用 fig 目录下的图片 -->
                         <img src="fig/od.png" alt="OD数据" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <div class="p-6">
@@ -263,11 +245,11 @@
                             <h3 class="text-xl font-bold">OD流数据</h3>
                             <span class="bg-blue-100 text-primary text-sm font-medium px-3 py-1 rounded-full">已上线</span>
                         </div>
-                        <p class="text-gray-600 mb-4">包含城市间、区域间的人口流动数据，用于城市联系强度分析与区域协同发展研究</p>
+                        <p class="text-gray-600 mb-4">包含城市区域间的人口流动数据，用于城市区域联系强度分析与区域协同发展研究</p>
                         <div class="flex items-center text-sm text-gray-500 mb-4">
-                            <span class="mr-4"><i class="fa-solid fa-database mr-1"></i> 1GB+</span>
+                            <span class="mr-4"><i class="fa-solid fa-database mr-1"></i> 100MB+</span>
                             <span class="mr-4"><i class="fa-solid fa-calendar mr-1"></i> 2019, 2021</span>
-                            <span><i class="fa-solid fa-map-marker-alt mr-1"></i> 全国3个城市</span>
+                            <span><i class="fa-solid fa-map-marker-alt mr-1"></i> 全国2个城市</span>
                         </div>
                         <a href="#download" class="text-primary hover:text-primary/80 font-medium flex items-center">
                             查看详情 <i class="fa-solid fa-arrow-right ml-2"></i>
@@ -275,10 +257,8 @@
                     </div>
                 </div>
                 
-                <!-- 建筑足迹数据卡片 -->
                 <div class="bg-white rounded-xl shadow-md overflow-hidden card-hover">
                     <div class="h-48 overflow-hidden">
-                        <!-- 使用 fig 目录下的图片 -->
                         <img src="fig/building.png" alt="建筑足迹数据" class="w-full h-full object-cover transition-transform duration-500 hover:scale-110">
                     </div>
                     <div class="p-6">
@@ -307,7 +287,7 @@
         </div>
     </section>
 
-    <!-- 平台特性 -->
+    <!-- 平台说明 -->
     <section id="features" class="section-padding bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -316,7 +296,6 @@
             </div>
             
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 特性卡片1 -->
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-database text-2xl text-primary"></i>
@@ -325,7 +304,6 @@
                     <p class="text-gray-600">整合微博、POI、轨迹等多种地理数据源，提供全面的城市空间分析基础</p>
                 </div>
                 
-                <!-- 特性卡片2 -->
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-chart-line text-2xl text-primary"></i>
@@ -334,7 +312,6 @@
                     <p class="text-gray-600">随机抽取数据进行展示</p>
                 </div>
                 
-                <!-- 特性卡片3 -->
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-download text-2xl text-primary"></i>
@@ -343,7 +320,6 @@
                     <p class="text-gray-600">用的百度网盘</p>
                 </div>
                 
-                <!-- 特性卡片4 -->
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-shield-alt text-2xl text-primary"></i>
@@ -352,7 +328,6 @@
                     <p class="text-gray-600">简单的数据下载平台，不会收集用户数据</p>
                 </div>
                 
-                <!-- 特性卡片5 -->
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-users text-2xl text-primary"></i>
@@ -361,7 +336,6 @@
                     <p class="text-gray-600">有问题可以邮箱联系</p>
                 </div>
                 
-                <!-- 特性卡片6 -->
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-file-alt text-2xl text-primary"></i>
@@ -373,81 +347,65 @@
         </div>
     </section>
 
-    <!-- 数据展示 -->
+    <!-- 可视化 -->
     <section id="showcase" class="section-padding bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">数据可视化展示</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">探索地理数据的空间分布特征与模式</p>
             </div>
-            
+
             <div class="bg-white rounded-xl shadow-lg overflow-hidden">
                 <div class="flex flex-col lg:flex-row">
-                    <!-- 地图容器 -->
-                    <div class="lg:w-2/3 h-[500px] relative" id="mapContainer">
+                    
+                    <div class="lg:w-2/3 h-[771px] relative" id="mapContainer"> <!-- 地图 -->
                         <div id="map" class="w-full h-full"></div>
-                        
-                        <!-- 地图控件 -->
-                        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg shadow-md p-3 z-10">
+
+                        <div class="absolute top-2 left-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-md p-3 z-10", style="width: 150px;">
                             <div class="mb-3">
                                 <label class="block text-sm font-medium text-gray-700 mb-1">数据类型</label>
-                                <select id="dataType" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    <option value="weibo">微博签到数据</option>
-                                    <option value="poi">POI数据</option>
-                                    <option value="aoi">AOI数据</option>
-                                    <option value="trajectory">轨迹数据</option>
-                                    <option value="od">OD流数据</option>
-                                    <option value="building">建筑足迹数据</option>
-                                </select>
+                                <select id="dataType" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-3 focus:ring-primary/50">
+                                    </select>
                             </div>
-                            
+
                             <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">城市</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">区域</label>
                                 <select id="citySelect" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    <option value="beijing">北京</option>
-                                    <option value="shanghai">上海</option>
-                                    <option value="guangzhou">广州</option>
-                                    <option value="shenzhen">深圳</option>
-                                    <option value="hangzhou">杭州</option>
-                                </select>
+                                    </select>
                             </div>
-                            
+
                             <button id="refreshMap" class="w-full btn-primary text-sm">
                                 <i class="fa-solid fa-refresh mr-1"></i> 更新地图
                             </button>
+                            <button id="resetMap" class="w-full btn-secondary text-sm mt-2">
+                                <i class="fa-solid fa-undo mr-1"></i> 复原地图
+                            </button>
+
                         </div>
                     </div>
-                    
-                    <!-- 统计信息和图表 -->
                     <div class="lg:w-1/3 p-6 bg-gray-50">
                         <h3 class="text-xl font-bold mb-4">数据统计信息</h3>
-                        
-                        <!-- 统计卡片 -->
+
                         <div class="grid grid-cols-2 gap-4 mb-6">
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="text-2xl font-bold text-primary mb-1">128,543</div>
+                                <div class="text-2xl font-bold text-primary mb-1">200,000,000+</div>
                                 <div class="text-sm text-gray-600">总记录数</div>
                             </div>
                             <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="text-2xl font-bold text-primary mb-1">35.2%</div>
-                                <div class="text-sm text-gray-600">增长率</div>
+                                <div class="text-2xl font-bold text-primary mb-1">41</div>
+                                <div class="text-sm text-gray-600">数据集个数</div>
                             </div>
                         </div>
-                        
-                        <!-- 图表 -->
+
                         <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
                             <h4 class="text-lg font-medium mb-3">数据类型分布</h4>
                             <div class="h-64">
                                 <canvas id="dataTypeChart"></canvas>
                             </div>
                         </div>
-                        
-                        <!-- 数据描述 -->
-                        <div class="bg-white p-4 rounded-lg shadow-sm">
-                            <h4 class="text-lg font-medium mb-3">数据说明</h4>
-                            <p class="text-gray-600 text-sm">
-                                微博签到数据是用户在社交媒体平台上主动标记的位置信息，包含用户ID、时间戳、位置坐标和文本内容等。这些数据反映了城市人群的活动特征和热点分布，可用于城市活力分析、功能区识别、交通规划等领域的研究。
-                            </p>
+
+                        <div class="bg-white p-4 rounded-lg shadow-sm", style="text-align: justify; height: 215px;"> 
+                            <p id="dataDescription">数据描述</p></div>
                         </div>
                     </div>
                 </div>
@@ -455,7 +413,7 @@
         </div>
     </section>
 
-    <!-- 下载中心 -->
+    <!-- 数据集下载 -->
     <section id="download" class="section-padding bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -463,7 +421,6 @@
                 <p class="text-gray-600 max-w-2xl mx-auto">选择合适的数据集进行下载，支持多种格式和区域范围</p>
             </div>
             
-            <!-- 筛选器 -->
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
@@ -503,7 +460,6 @@
             </div>
                 
             
-            <!-- 下载列表 -->
             <div class="bg-white rounded-xl shadow-md p-6 relative">
                 <div id="dynamic-download-list" class="space-y-6">
                     <div id="loadingOverlay" class="absolute inset-0 bg-white bg-opacity-75 flex items-center justify-center z-10 hidden rounded-xl">
@@ -518,7 +474,7 @@
         </div>
     </section>
 
-    <!-- 联系我们 -->
+    <!-- 联系信息 -->
     <section id="contact" class="section-padding bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -527,7 +483,6 @@
             </div>
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- 联系信息 -->
                 <div class="lg:col-span-1 bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-xl font-bold mb-6">联系方式</h3>
                     
@@ -592,7 +547,6 @@
                     </div>
                 </div>
                 
-                <!-- 联系表单 -->
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-xl font-bold mb-6">发送消息</h3>
                     
@@ -630,7 +584,6 @@
         </div>
     </section>
 
-    <!-- 页脚 -->
     <footer class="bg-dark text-white py-12">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
@@ -720,7 +673,6 @@
         </div>
     </footer>
 
-    <!-- JavaScript -->
     <script>
         // 导航栏滚动效果
         const navbar = document.getElementById('navbar');
@@ -806,43 +758,6 @@
             }
         );
         
-        // 初始化地图
-        function initMap() {
-            const map = new ol.Map({
-                target: 'map',
-                layers: [
-                    new ol.layer.Tile({
-                        source: new ol.source.OSM()
-                    })
-                ],
-                view: new ol.View({
-                    center: ol.proj.fromLonLat([116.3956, 39.9155]), // 北京中心
-                    zoom: 12
-                })
-            });
-            
-            // 模拟加载数据
-            document.getElementById('refreshMap').addEventListener('click', () => {
-                // 显示加载状态
-                const mapContainer = document.getElementById('mapContainer');
-                const loadingOverlay = document.createElement('div');
-                loadingOverlay.className = 'absolute inset-0 bg-white/80 flex items-center justify-center z-20';
-                loadingOverlay.innerHTML = '<div class="text-center"><i class="fa-solid fa-spinner fa-spin text-primary text-3xl mb-2"></i><p class="text-gray-700">正在加载数据...</p></div>';
-                mapContainer.appendChild(loadingOverlay);
-                
-                // 模拟加载延迟
-                setTimeout(() => {
-                    // 移除加载状态
-                    mapContainer.removeChild(loadingOverlay);
-                    
-                    // 更新地图数据
-                    alert('地图数据已更新为: ' + document.getElementById('dataType').value + ' - ' + document.getElementById('citySelect').value);
-                }, 1000);
-            });
-        }
-        
-        // 页面加载完成后初始化地图
-        window.addEventListener('load', initMap);
         
         // 表单提交
         document.getElementById('contactForm').addEventListener('submit', (e) => {
@@ -870,7 +785,8 @@
             }, 1500);
         });
     </script>
+
+    <script src="js/map.js"></script>
     <script src="js/dynamic-renderer.js"></script>
 </body>
 </html>
-    

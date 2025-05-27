@@ -168,12 +168,12 @@ async function fetchDataAndRender() {
     try {
         // 定义六个数据文件的路径
         const filePaths = [
-            'data/describe/weibo_describe.json',
-            'data/describe/poi_describe.json',
-            'data/describe/aoi_describe.json',
-            'data/describe/trajectory_describe.json',
-            'data/describe/od_describe.json',
-            'data/describe/building_describe.json'
+            'data/describe/weibo.json',
+            'data/describe/poi.json',
+            'data/describe/aoi.json',
+            'data/describe/trajectory.json',
+            'data/describe/od.json',
+            'data/describe/building.json'
         ];
 
         // 并行加载所有数据文件
@@ -343,7 +343,6 @@ levelFilter.addEventListener('change', () => {
     // Apply all filters with the updated city options
     applyFilters();
 });
-
 
 // Initial data fetch and render when the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', fetchDataAndRender);
