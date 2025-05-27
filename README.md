@@ -1,27 +1,38 @@
 # GeoDataHub - 地理大数据下载平台
 
+## 网页地址
+
+数据下载中心：https://giser2000.github.io/geodata.github.io/
+
 ## 代码结构
 ```plaintext
 geodata.github.io/
 ├── data/
+│   ├── geodata/
+│   │   ├── aoi/
+│   │   ├── od/
+│   │   ├── poi/
+│   │   ├── trajectory/
+│   │   └── weibo/
 │   └── describe/
-│       ├── aoi_describe.json       # AOI数据集描述
-│       ├── building_describe.json  # 建筑足迹数据集描述
-│       ├── od_describe.json        # OD流数据集描述
-│       ├── poi_describe.json       # POI数据集描述
-│       ├── trajectory_describe.json# 轨迹数据集描述
-│       └── weibo_describe.json     # 微博签到数据集描述
+│       ├── aoi.json
+│       ├── building.json
+│       ├── od.json
+│       ├── poi.json
+│       ├── trajectory.json
+│       └── weibo.json
 ├── fig/
-│   ├── aoi.png                     # 兴趣面示例图
-│   ├── building.png                # 建筑足迹示例图
-│   ├── od.png                      # od流示例图
-│   ├── poi.png                     # 兴趣点示例图
-│   ├── trajectory.png              # 移动轨迹示例图
-│   └── weibo.png                   # 微博签到示意图
+│   ├── aoi.png
+│   ├── building.png
+│   ├── od.png
+│   ├── poi.png
+│   ├── trajectory.png
+│   └── weibo.png
 ├── js/
-│   ├── dynamic-renderer.js         # 动态渲染与筛选逻辑
-│   └── map.js                      # 地图可视化逻辑
-└── index.html                      # 主页面
+│   ├── dynamic-renderer.js
+│   └── map.js
+├── README.md
+└── index.html              
 ```
 
 ## 数据集信息
