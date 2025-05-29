@@ -1,5 +1,3 @@
-// js/map.js
-
 // OpenLayers Map Initialization with ArcGIS Basemap
 const map = new ol.Map({
     target: 'map', // The ID of the div element for the map
@@ -71,7 +69,15 @@ let currentGeoJSONLayer = null; // To keep track of the currently displayed GeoJ
 const POI_CHOROPLETH_COLORS = ['#edf8e9', '#bae4b3', '#7bccc4', '#43a2ca', '#0868ac'];
 const POI_CHOROPLETH_BREAKS = []; // To be calculated dynamically based on data
 
-// Function to calculate quantile breaks for choropleth styling
+// --- OD流 5级分级颜色和宽度配置 ---
+// 红色的5级渐变，用于OD流的num值分级
+const OD_FIVE_CLASS_COLORS = ['#fee0d2', '#fc9272', '#fb6a4a', '#de2d26', '#a50f15'];
+// 对应的宽度， num值越大线越粗
+const OD_FIVE_CLASS_WIDTHS = [1, 2, 3, 4, 5];
+
+let odNumBreaks = []; // 用于存储OD流的num值分级点 (Jenks Natural Breaks)
+
+// Function to calculate quantile breaks for choropleth styling (Fallback)
 function calculateQuantileBreaks(dataValues, numBreaks) {
     if (!dataValues || dataValues.length === 0) return [];
     const validValues = dataValues.filter(v => typeof v === 'number' && !isNaN(v));
@@ -82,20 +88,58 @@ function calculateQuantileBreaks(dataValues, numBreaks) {
         const index = Math.min(Math.floor(sortedValues.length * i / numBreaks), sortedValues.length - 1);
         breaks.push(sortedValues[index]);
     }
+    // 确保包含最大值作为最后一个分界点
     if (sortedValues.length > 0) {
         breaks.push(sortedValues[sortedValues.length - 1]);
     }
     return [...new Set(breaks)].sort((a, b) => a - b);
 }
 
+// Function to calculate natural breaks for choropleth styling (using simple-statistics)
+function calculateNaturalBreaks(dataValues, numBreaks) {
+    if (!dataValues || dataValues.length === 0) return [];
+    const validValues = dataValues.filter(v => typeof v === 'number' && !isNaN(v));
+    if (validValues.length === 0) return [];
+
+    try {
+        // ss.ckmeans 是 simple-statistics 提供的 Jenks natural breaks 实现
+        // 它返回的是一个包含 numBreaks 个数组的数组，每个子数组是一个聚类
+        // 我们需要每个聚类的最大值作为分界点
+        const clusters = ss.ckmeans(validValues, numBreaks);
+        const jenksBreaks = clusters.map(cluster => cluster[cluster.length - 1]);
+
+        // 确保返回的 breaks 是递增且唯一的
+        let uniqueBreaks = [...new Set(jenksBreaks)].sort((a, b) => a - b);
+
+        // 有时 ckmeans 可能因为数据分布返回的分界点数量不足
+        // 确保最后一个分界点是数据中的最大值，并且分界点数量至少和 numBreaks 相同（如果可能）
+        if (validValues.length > 0 && uniqueBreaks.length > 0 && uniqueBreaks[uniqueBreaks.length - 1] < Math.max(...validValues)) {
+             uniqueBreaks.push(Math.max(...validValues));
+        }
+
+        // 如果最终的分界点数量不足，回退到分位数分级
+        if (uniqueBreaks.length < numBreaks) {
+            console.warn(`Not enough unique values or clusters for ${numBreaks} natural breaks. Falling back to quantile breaks.`);
+            return calculateQuantileBreaks(validValues, numBreaks);
+        }
+        return uniqueBreaks.slice(0, numBreaks); // 返回 numBreaks 个分界点
+    } catch (e) {
+        console.error("Error calculating natural breaks, falling back to quantile breaks:", e);
+        // 出现错误时回退到分位数分级
+        return calculateQuantileBreaks(validValues, numBreaks);
+    }
+}
+
+
 // Function to get color based on value and breaks
 function getChoroplethColor(value, breaks, colors) {
-    if (value === undefined || value === null || isNaN(value)) return 'rgba(0,0,0,0)';
+    if (value === undefined || value === null || isNaN(value)) return 'rgba(0,0,0,0)'; // 默认透明
     for (let i = 0; i < breaks.length; i++) {
         if (value <= breaks[i]) {
             return colors[i];
         }
     }
+    // 如果值大于所有分界点，使用最后一个颜色
     return colors[colors.length - 1];
 }
 
@@ -142,6 +186,7 @@ async function fetchPoiProvinceCounts(year) {
         const counts = Object.values(poiProvinceCounts).filter(v => v > 0);
         const numBreaks = POI_CHOROPLETH_COLORS.length;
         POI_CHOROPLETH_BREAKS.length = 0;
+        // POI Choropleth 默认使用分位数分级
         POI_CHOROPLETH_BREAKS.push(...calculateQuantileBreaks(counts, numBreaks));
 
         if (POI_CHOROPLETH_BREAKS.length === 0 && counts.length > 0) {
@@ -197,6 +242,7 @@ function updateDescription() {
         dataDescriptionParagraph.textContent = 'No description available for this data type.';
     }
 }
+
 
 // Function to load and display GeoJSON data on the map
 async function loadGeoJSONData(dataType, city) {
@@ -279,6 +325,7 @@ async function loadGeoJSONData(dataType, city) {
     let specificFolder = '';
     let customStyle = null;
 
+
     switch (dataType) {
         case 'AOI':
             specificFolder = 'aoi';
@@ -294,12 +341,22 @@ async function loadGeoJSONData(dataType, city) {
             break;
         case 'OD流':
             specificFolder = 'od';
-            customStyle = new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 165, 0, 0.7)',
-                    width: 3
-                }),
-            });
+            // OD流的样式将动态生成，依赖于数据加载完成后的num值统计
+            customStyle = (feature) => {
+                const num = feature.get('num');
+                // 使用 odNumBreaks 进行颜色分级
+                const color = getChoroplethColor(num, odNumBreaks, OD_FIVE_CLASS_COLORS);
+                // 宽度也根据颜色索引来
+                const widthIndex = OD_FIVE_CLASS_COLORS.findIndex(c => c === color);
+                const width = OD_FIVE_CLASS_WIDTHS[widthIndex !== -1 ? widthIndex : 0]; // 找不到则默认最小宽度
+
+                return new ol.style.Style({
+                    stroke: new ol.style.Stroke({
+                        color: color,
+                        width: width
+                    }),
+                });
+            };
             break;
         case 'POI':
             specificFolder = 'poi';
@@ -332,11 +389,11 @@ async function loadGeoJSONData(dataType, city) {
             });
             break;
         case '移动轨迹':
-            specificFolder = 'mobile';
+            specificFolder = 'trajectory';
             customStyle = new ol.style.Style({
                 stroke: new ol.style.Stroke({
-                    color: 'rgba(75, 192, 192, 0.7)',
-                    width: 2
+                    color: 'rgba(1, 43, 82, 0.93)',
+                    width: 3
                 }),
             });
             break;
@@ -365,15 +422,31 @@ async function loadGeoJSONData(dataType, city) {
 
     const newVectorLayer = new ol.layer.Vector({
         source: newVectorSource,
+        // 样式在源加载完成后设置，因为需要所有feature的num值
         style: customStyle
     });
 
     map.addLayer(newVectorLayer);
     currentGeoJSONLayer = newVectorLayer;
 
+    // 当 GeoJSON 源数据加载完成后，如果是 OD 流，则计算 num 自然间断分级
     newVectorSource.once('change', function() {
         if (newVectorSource.getState() === 'ready') {
-            if (newVectorSource.getFeatures().length > 0) {
+            const features = newVectorSource.getFeatures();
+            if (features.length > 0) {
+                if (dataType === 'OD流') {
+                    const numValues = features.map(f => f.get('num')).filter(v => typeof v === 'number' && !isNaN(v));
+                    const numBreaksCount = OD_FIVE_CLASS_COLORS.length; // 5个级别
+
+                    // 使用自然间断分级
+                    odNumBreaks = calculateNaturalBreaks(numValues, numBreaksCount);
+
+                    console.log('OD流 num values:', numValues);
+                    console.log('OD流 Natural Breaks:', odNumBreaks);
+                    // 重新设置样式以应用新的分级
+                    newVectorLayer.setStyle(customStyle); // 触发图层重绘
+                }
+
                 const extent = newVectorSource.getExtent();
                 map.getView().fit(extent, {
                     padding: [50, 50, 50, 50],
