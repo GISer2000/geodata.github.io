@@ -59,15 +59,18 @@ const refreshMapButton = document.getElementById('refreshMap');
 const dataDescriptionParagraph = document.getElementById('dataDescription');
 const resetMapButton = document.getElementById('resetMap'); // 重置地图按钮的引用
 
+let currentGeoJSONLayer = null; // 跟踪当前显示的 GeoJSON 图层
 
 let allData = []; // 存储从 all.json 获取的数据
 let poiProvinceCounts = {}; // 存储按省份统计的 POI 数量，用于分级统计图
-let currentGeoJSONLayer = null; // 跟踪当前显示的 GeoJSON 图层
-
-// --- POI 分级统计图样式配置 ---
-// POI 分级统计图的 5 级顺序绿蓝色方案
-const POI_CHOROPLETH_COLORS = ['#edf8e9', '#bae4b3', '#7bccc4', '#43a2ca', '#0868ac'];
-const POI_CHOROPLETH_BREAKS = []; // 将根据数据动态计算
+let POI_CHOROPLETH_BREAKS = [];
+let buildingProvinceCounts = {};
+let BUILDING_CHOROPLETH_BREAKS = [];
+let otherProvinceCounts = {};
+let OTHER_CHOROPLETH_BREAKS = [];
+const POI_CHOROPLETH_COLORS = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#3182bd','#08519c'];
+const BUILDING_CHOROPLETH_COLORS = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'];
+const OTHER_CHOROPLETH_COLORS = ['#f7f7f7','#e0e0e0','#c9c9c9','#b0b0b0','#969696','#7d7d7d','#646464'];
 
 // --- OD流 5级分级颜色和宽度配置 ---
 // 红色的5级渐变，用于OD流的num值分级
@@ -158,14 +161,14 @@ async function fetchAllData() {
     }
 }
 
-// 获取特定年份的 POI 省份统计数据函数
+// 分级显示 POI
 async function fetchPoiProvinceCounts(year) {
     const statsFilePath = `data/geodata/poi/全国(${year}).json`;
     try {
         const response = await fetch(statsFilePath);
         if (!response.ok) {
             if (response.status === 404) {
-                console.warn(`POI 省份统计文件未找到: ${statsFilePath}。将计数初始化为 0。`);
+                console.warn(`POI 省份统计文件未找到: ${statsFilePath}，初始化为0`);
                 poiProvinceCounts = {};
             } else {
                 throw new Error(`HTTP error! status: ${response.status}`);
@@ -176,33 +179,102 @@ async function fetchPoiProvinceCounts(year) {
 
         const provinceFeatures = chinaVectorSource.getFeatures();
         const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
-
         allProvinceNames.forEach(name => {
-            if (poiProvinceCounts[name] === undefined) {
-                poiProvinceCounts[name] = 0;
-            }
+            if (poiProvinceCounts[name] === undefined) poiProvinceCounts[name] = 0;
         });
 
         const counts = Object.values(poiProvinceCounts).filter(v => v > 0);
         const numBreaks = POI_CHOROPLETH_COLORS.length;
-        POI_CHOROPLETH_BREAKS.length = 0;
-        // POI 分级统计图默认使用分位数分级
-        POI_CHOROPLETH_BREAKS.push(...calculateQuantileBreaks(counts, numBreaks));
-
-        if (POI_CHOROPLETH_BREAKS.length === 0 && counts.length > 0) {
+        POI_CHOROPLETH_BREAKS = calculateQuantileBreaks(counts, numBreaks);
+        if (POI_CHOROPLETH_BREAKS.length === 0 && counts.length > 0)
             POI_CHOROPLETH_BREAKS.push(Math.max(...counts));
-        }
 
-        console.log(`已获取/处理 ${year} 年的 POI 省份计数:`, poiProvinceCounts);
+        console.log(`已获取/处理 ${year} 年 POI 省份计数`, poiProvinceCounts);
         console.log('POI 分级统计图分级点:', POI_CHOROPLETH_BREAKS);
 
     } catch (error) {
-        console.error(`获取或处理 ${statsFilePath} 时出错:`, error);
-        dataDescriptionParagraph.textContent = `加载 ${year} 年的 POI 省份统计数据时出错。`;
+        console.error(`获取/处理 ${statsFilePath} 出错:`, error);
         poiProvinceCounts = {};
-        POI_CHOROPLETH_BREAKS.length = 0;
+        POI_CHOROPLETH_BREAKS = [];
     }
 }
+
+// 分级显示建筑足迹
+async function fetchBuildingProvinceCounts(year) {
+    const statsFilePath = `data/geodata/building/全国(${year}).json`;
+    try {
+        const response = await fetch(statsFilePath);
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.warn(`建筑省份统计文件未找到: ${statsFilePath}，初始化为0`);
+                buildingProvinceCounts = {};
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } else {
+            buildingProvinceCounts = await response.json();
+        }
+
+        const provinceFeatures = chinaVectorSource.getFeatures();
+        const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
+        allProvinceNames.forEach(name => {
+            if (buildingProvinceCounts[name] === undefined) buildingProvinceCounts[name] = 0;
+        });
+
+        const counts = Object.values(buildingProvinceCounts).filter(v => v > 0);
+        const numBreaks = BUILDING_CHOROPLETH_COLORS.length;
+        BUILDING_CHOROPLETH_BREAKS = calculateQuantileBreaks(counts, numBreaks);
+        if (BUILDING_CHOROPLETH_BREAKS.length === 0 && counts.length > 0)
+            BUILDING_CHOROPLETH_BREAKS.push(Math.max(...counts));
+
+        console.log(`已获取/处理 ${year} 年建筑省份计数`, buildingProvinceCounts);
+        console.log('建筑分级统计图分级点:', BUILDING_CHOROPLETH_BREAKS);
+
+    } catch (error) {
+        console.error(`获取/处理 ${statsFilePath} 出错:`, error);
+        buildingProvinceCounts = {};
+        BUILDING_CHOROPLETH_BREAKS = [];
+    }
+}
+
+// 分级显示 Other 类型
+async function fetchOtherProvinceCounts(dataName) {
+    const statsFilePath = `data/geodata/other/全国(${dataName}).json`; // 不用 encodeURIComponent
+    try {
+        const response = await fetch(statsFilePath);
+        if (!response.ok) {
+            if (response.status === 404) {
+                console.warn(`Other 省份统计文件未找到: ${statsFilePath}，初始化为0`);
+                otherProvinceCounts = {};
+            } else {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+        } else {
+            otherProvinceCounts = await response.json();
+        }
+
+        const provinceFeatures = chinaVectorSource.getFeatures();
+        const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
+        allProvinceNames.forEach(name => {
+            if (otherProvinceCounts[name] === undefined) otherProvinceCounts[name] = 0;
+        });
+
+        const counts = Object.values(otherProvinceCounts).filter(v => v > 0);
+        const numBreaks = OTHER_CHOROPLETH_COLORS.length;
+        OTHER_CHOROPLETH_BREAKS = calculateQuantileBreaks(counts, numBreaks);
+        if (OTHER_CHOROPLETH_BREAKS.length === 0 && counts.length > 0)
+            OTHER_CHOROPLETH_BREAKS.push(Math.max(...counts));
+
+        console.log(`已获取/处理 Other 类型 "${dataName}" 省份计数`, otherProvinceCounts);
+        console.log('Other 分级统计图分级点:', OTHER_CHOROPLETH_BREAKS);
+
+    } catch (error) {
+        console.error(`获取/处理 ${statsFilePath} 出错:`, error);
+        otherProvinceCounts = {};
+        OTHER_CHOROPLETH_BREAKS = [];
+    }
+}
+
 
 // 填充数据类型下拉菜单函数
 function populateDataTypeDropdown() {
@@ -259,67 +331,82 @@ async function loadGeoJSONData(dataType, city) {
         return;
     }
 
-    // --- POI 省份分级统计图的特殊处理 ---
-    if (dataType === 'POI' && city.startsWith('全国(')) {
-        const yearMatch = city.match(/\((\d{4})\)/);
-        const year = yearMatch ? yearMatch[1] : null;
+    // --- 省份分级统计图的特殊处理 ---
+    if (city.startsWith('全国(')) {
+        let year = null;
+        let dataName = null;
 
-        if (!year) {
-            dataDescriptionParagraph.textContent = "错误：无法从 POI 数据选择中提取年份。";
-            return;
+        if (dataType === 'POI' || dataType === '建筑足迹') {
+            const yearMatch = city.match(/\((\d{4})\)/);
+            year = yearMatch ? yearMatch[1] : null;
+            if (!year) {
+                dataDescriptionParagraph.textContent = "错误：无法提取年份";
+                return;
+            }
+        } else if (dataType === '其他门类') {
+            const nameMatch = city.match(/全国\((.+)\)/);
+            dataName = nameMatch?.[1]?.trim() || null;
+            if (!dataName) {
+                dataDescriptionParagraph.textContent = "错误：无法提取 Other 数据名称";
+                return;
+            }
         }
 
-        await fetchPoiProvinceCounts(year);
+        // ✅ 定义外部变量，避免作用域问题
+        let counts, breaks, colors;
 
-        if (Object.keys(poiProvinceCounts).length === 0 && POI_CHOROPLETH_BREAKS.length === 0) {
-            dataDescriptionParagraph.textContent = `POI 省份数据 (${year} 年) 不可用或加载不正确。`;
+        if (dataType === 'POI') {
+            await fetchPoiProvinceCounts(year);
+            counts = poiProvinceCounts;
+            breaks = POI_CHOROPLETH_BREAKS;
+            colors = POI_CHOROPLETH_COLORS;
+        } else if (dataType === '建筑足迹') {
+            await fetchBuildingProvinceCounts(year);
+            counts = buildingProvinceCounts;
+            breaks = BUILDING_CHOROPLETH_BREAKS;
+            colors = BUILDING_CHOROPLETH_COLORS;
+        } else if (dataType === '其他门类') {
+            await fetchOtherProvinceCounts(dataName);
+            counts = otherProvinceCounts;
+            breaks = OTHER_CHOROPLETH_BREAKS;
+            colors = OTHER_CHOROPLETH_COLORS;
+        }
+
+        if (!counts || Object.keys(counts).length === 0) {
+            dataDescriptionParagraph.textContent = `${dataType} 省份数据 (${year || dataName}) 不可用`;
             return;
         }
 
         chinaVectorLayer.setStyle(function(feature) {
             const provinceName = feature.get('fullname');
-            const count = poiProvinceCounts[provinceName] || 0;
-            const color = getChoroplethColor(count, POI_CHOROPLETH_BREAKS, POI_CHOROPLETH_COLORS);
+            const count = counts[provinceName] || 0;                  
+            const color = getChoroplethColor(count, breaks, colors); 
 
-            const styles = [
-                new ol.style.Style({
-                    fill: new ol.style.Fill({
-                        color: color
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(0, 0, 0, 0.5)',
-                        width: 0.8
-                    })
-                })
-            ];
+            const styles = [new ol.style.Style({
+                fill: new ol.style.Fill({ color }),
+                stroke: new ol.style.Stroke({ color: 'rgba(0,0,0,0.5)', width: 0.8 })
+            })];
 
-            // 为每个省份添加数字标签（如果要素是面）
             if (feature.getGeometry() && feature.getGeometry().getType().includes('Polygon')) {
                 const centroid = ol.extent.getCenter(feature.getGeometry().getExtent());
-                styles.push(
-                    new ol.style.Style({
-                        geometry: new ol.geom.Point(centroid),
-                        text: new ol.style.Text({
-                            text: count.toString(),
-                            font: '10px Calibri,sans-serif',
-                            fill: new ol.style.Fill({ color: '#000' }),
-                            stroke: new ol.style.Stroke({ color: '#fff', width: 2 })
-                        })
+                styles.push(new ol.style.Style({
+                    geometry: new ol.geom.Point(centroid),
+                    text: new ol.style.Text({
+                        text: count.toString(),
+                        font: '10px Calibri,sans-serif',
+                        fill: new ol.style.Fill({ color: '#000' }),
+                        stroke: new ol.style.Stroke({ color: '#fff', width: 2 })
                     })
-                );
+                }));
             }
+
             return styles;
         });
 
-        const extent = chinaVectorSource.getExtent();
-        map.getView().fit(extent, {
-            padding: [50, 50, 50, 50],
-            duration: 1000
-        });
-
-        console.log(`已显示 ${city} 的 POI 分级统计图`);
-        return;
+        map.getView().fit(chinaVectorSource.getExtent(), { padding: [50,50,50,50], duration: 1000 });
+        console.log(`已显示 ${city} 的 ${dataType} 分级统计图`);
     }
+
 
     // --- 其他 GeoJSON 类型（点、线、自定义多边形）的通用处理 ---
     let geoJSONBasePath = 'data/geodata/';

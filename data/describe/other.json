@@ -1,0 +1,19 @@
+[
+  {
+    "id": "other-0",
+    "title": "全国历史观鸟数据",
+    "type": "其他门类",
+    "description": "包含全国1980-2024的约1200万条记录",
+    "status": "已验证",
+    "size": "2.0GB",
+    "updateTime": "2024",
+    "provider": "中国观鸟记录中心",
+    "tags": ["观鸟", "物种分布", "生态研究", "时空行为"],
+    "formats": ["DTA", "XLSX"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1Tjg67an7BzKfi_h1kpFQ0A?pwd=1111",
+    "level": "国家级",
+    "city": "全国"
+  }
+]

@@ -165,7 +165,8 @@ async function fetchDataAndRender() {
             'data/describe/aoi.json',
             'data/describe/trajectory.json',
             'data/describe/od.json',
-            'data/describe/building.json'
+            'data/describe/building.json',
+            'data/describe/other.json'
         ];
 
         const responses = await Promise.all(filePaths.map(path => fetch(path)));
