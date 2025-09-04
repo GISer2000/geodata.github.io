@@ -13,12 +13,14 @@ geodata.github.io/
 │   │   ├── od/
 │   │   ├── poi/
 │   │   ├── trajectory/
+│   │   ├── other/
 │   │   └── weibo/
 │   └── describe/
 │       ├── aoi.json
 │       ├── building.json
 │       ├── od.json
 │       ├── poi.json
+│       ├── other.json
 │       ├── trajectory.json
 │       └── weibo.json
 ├── fig/
@@ -26,6 +28,7 @@ geodata.github.io/
 │   ├── building.png
 │   ├── od.png
 │   ├── poi.png
+│   ├── other.png
 │   ├── trajectory.png
 │   └── weibo.png
 ├── js/
