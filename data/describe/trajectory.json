@@ -54,7 +54,7 @@
     "id": "trajectory-3",
     "title": "深圳市移动轨迹数据",
     "type": "移动轨迹",
-    "description": "包含深圳市的出租车轨迹信息，2014-10-22，约4500万条记录",
+    "description": "包含深圳市的出租车轨迹信息，2014-10-22，约4700万条记录",
     "status": "已验证",
     "size": "1.75GB",
     "updateTime": "2014",
@@ -63,7 +63,7 @@
     "formats": ["CSV"],
     "isDownloadable": true,
     "isVerified": true,
-    "url": "https://pan.baidu.com/s/1bUr3rm6WMqOWYmnTGS7EFQ?pwd=1111",
+    "url": "https://pan.baidu.com/s/1tQfOZv4CrOF9MrdVrMN34g?pwd=1111",
     "level": "市级",
     "city": "深圳市"
   },
