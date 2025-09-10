@@ -11,16 +11,16 @@ window.addEventListener('scroll', () => {
 });
 
 // 移动端菜单切换
-const menuBtn = document.getElementById('menuBtn');
-const mobileMenu = document.getElementById('mobileMenu');
+document.addEventListener('DOMContentLoaded', () => {
+    const menuBtn = document.getElementById('menuBtn');
+    const mobileMenu = document.getElementById('mobileMenu');
 
-menuBtn.addEventListener('click', () => {
-    mobileMenu.classList.toggle('hidden');
-    if (mobileMenu.classList.contains('hidden')) {
-        menuBtn.innerHTML = '<i class="fa-solid fa-bars text-xl"></i>';
-    } else {
-        menuBtn.innerHTML = '<i class="fa-solid fa-times text-xl"></i>';
-    }
+    menuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+        menuBtn.innerHTML = mobileMenu.classList.contains('hidden') 
+            ? '<i class="fa-solid fa-bars text-xl"></i>'
+            : '<i class="fa-solid fa-times text-xl"></i>';
+    });
 });
 
 // 平滑滚动
