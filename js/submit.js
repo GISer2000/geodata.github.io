@@ -7,6 +7,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const formData = new FormData(form);
 
+        // 找到提交按钮
+        const submitButton = form.querySelector('button[type="submit"]');
+        const originalContent = submitButton.innerHTML;
+
+        // 显示加载状态
+        submitButton.disabled = true;
+        submitButton.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i> 发送中...';
+
         try {
             const response = await fetch(form.action, {
                 method: "POST",
@@ -16,13 +24,24 @@ document.addEventListener("DOMContentLoaded", () => {
             if (response.ok) {
                 showFeedback("✅ 消息已成功发送！请检查您的邮箱。", "success");
                 form.reset();
+
+                // 成功后按钮显示绿色打勾
+                submitButton.innerHTML = '<i class="fa-solid fa-check mr-2"></i> 发送成功';
             } else {
                 showFeedback("❌ 消息发送失败，请稍后重试。", "error");
+                submitButton.innerHTML = originalContent;
             }
         } catch (err) {
             console.error("提交错误:", err);
             showFeedback("⚠️ 网络错误，请检查您的连接。", "error");
+            submitButton.innerHTML = originalContent;
         }
+
+        // 无论成功还是失败，2 秒后恢复按钮状态
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = originalContent;
+        }, 2000);
     });
 
     function showFeedback(message, type) {
