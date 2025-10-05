@@ -1,6 +1,6 @@
-// OpenLayers 地图初始化，使用 ArcGIS 底图
+// ------------------ 地图初始化 ------------------
 const map = new ol.Map({
-    target: 'map', // 地图容器 div 元素的 ID
+    target: 'map', 
     layers: [
         new ol.layer.Tile({
             source: new ol.source.XYZ({
@@ -10,77 +10,65 @@ const map = new ol.Map({
         })
     ],
     view: new ol.View({
-        center: ol.proj.fromLonLat([104.07, 30.67]), // 将地图中心设置到中国成都（经度，纬度）
+        center: ol.proj.fromLonLat([104.07, 30.67]), 
         zoom: 3,
-        projection: 'EPSG:3857' // 统一投影：Web Mercator
+        projection: 'EPSG:3857'
     })
 });
 
-// 中国边界的默认样式（透明填充，蓝色边框）
+// ------------------ 中国边界默认样式 ------------------
 const defaultChinaLayerStyle = new ol.style.Style({
     stroke: new ol.style.Stroke({
-        color: 'rgba(123, 123, 201, 0.8)', // 带有透明度的蓝色边框
+        color: 'rgba(123, 123, 201, 0.8)',
         width: 1
     }),
     fill: new ol.style.Fill({
-        color: 'rgba(255, 255, 255, 0)' // 完全透明的填充
+        color: 'rgba(255, 255, 255, 0)'
     })
 });
 
-// 为 GeoJSON 数据创建矢量源（最初用于中国边界）
 const chinaVectorSource = new ol.source.Vector({
     format: new ol.format.GeoJSON(),
-    url: 'data/geodata/china.geojson' // china.geojson 文件的路径
+    url: 'data/geodata/china.geojson'
 });
 
-// 为 GeoJSON 数据创建矢量图层（最初用于中国边界）
 const chinaVectorLayer = new ol.layer.Vector({
     source: chinaVectorSource,
-    style: defaultChinaLayerStyle // 应用默认样式
+    style: defaultChinaLayerStyle
 });
 
-// 将矢量图层添加到地图
 map.addLayer(chinaVectorLayer);
 
-// GeoJSON 要素加载完成后，将地图视图调整到其范围
 chinaVectorSource.on('addfeature', function() {
     const extent = chinaVectorSource.getExtent();
     map.getView().fit(extent, {
-        padding: [50, 50, 50, 50], // 在范围周围添加一些边距
-        duration: 1000 // 流畅的动画效果
+        padding: [50, 50, 50, 50],
+        duration: 1000
     });
 });
 
-// --- 动态数据加载和下拉菜单填充 ---
-
+// ------------------ DOM 元素 ------------------
 const dataTypeSelect = document.getElementById('dataType');
 const citySelect = document.getElementById('citySelect');
 const refreshMapButton = document.getElementById('refreshMap');
 const dataDescriptionParagraph = document.getElementById('dataDescription');
-const resetMapButton = document.getElementById('resetMap'); // 重置地图按钮的引用
+const resetMapButton = document.getElementById('resetMap');
 
-let currentGeoJSONLayer = null; // 跟踪当前显示的 GeoJSON 图层
+let currentGeoJSONLayer = null;
+let allData = [];
+let odNumBreaks = [];
 
-let allData = []; // 存储从 all.json 获取的数据
-let poiProvinceCounts = {}; // 存储按省份统计的 POI 数量，用于分级统计图
-let POI_CHOROPLETH_BREAKS = [];
-let buildingProvinceCounts = {};
-let BUILDING_CHOROPLETH_BREAKS = [];
-let otherProvinceCounts = {};
-let OTHER_CHOROPLETH_BREAKS = [];
-const POI_CHOROPLETH_COLORS = ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#3182bd','#08519c'];
-const BUILDING_CHOROPLETH_COLORS = ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'];
-const OTHER_CHOROPLETH_COLORS = ['#f7f7f7','#e0e0e0','#c9c9c9','#b0b0b0','#969696','#7d7d7d','#646464'];
+const DATA_FOLDER_MAP = {
+    'AOI': 'aoi',
+    'OD流': 'od',
+    'POI': 'poi',
+    '建筑足迹': 'building',
+    '移动轨迹': 'trajectory',
+    '微博签到': 'weibo',
+    '其他门类': 'other'
+};
 
-// --- OD流 5级分级颜色和宽度配置 ---
-// 红色的5级渐变，用于OD流的num值分级
-const OD_FIVE_CLASS_COLORS = ['#fee0d2', '#fc9272', '#fb6a4a', '#de2d26', '#a50f15'];
-// 对应的宽度， num值越大线越粗
-const OD_FIVE_CLASS_WIDTHS = [1, 2, 3, 4, 5];
-
-let odNumBreaks = []; // 用于存储OD流的num值分级点 (Jenks Natural Breaks)
-
-// 计算分位数分级点函数（备用方案）
+// ------------------ 分级计算函数 ------------------
 function calculateQuantileBreaks(dataValues, numBreaks) {
     if (!dataValues || dataValues.length === 0) return [];
     const validValues = dataValues.filter(v => typeof v === 'number' && !isNaN(v));
@@ -91,192 +79,70 @@ function calculateQuantileBreaks(dataValues, numBreaks) {
         const index = Math.min(Math.floor(sortedValues.length * i / numBreaks), sortedValues.length - 1);
         breaks.push(sortedValues[index]);
     }
-    // 确保包含最大值作为最后一个分界点
-    if (sortedValues.length > 0) {
-        breaks.push(sortedValues[sortedValues.length - 1]);
-    }
+    if (sortedValues.length > 0) breaks.push(sortedValues[sortedValues.length - 1]);
     return [...new Set(breaks)].sort((a, b) => a - b);
 }
 
-// 计算自然间断分级点函数（使用 simple-statistics）
 function calculateNaturalBreaks(dataValues, numBreaks) {
     if (!dataValues || dataValues.length === 0) return [];
     const validValues = dataValues.filter(v => typeof v === 'number' && !isNaN(v));
     if (validValues.length === 0) return [];
 
     try {
-        // ss.ckmeans 是 simple-statistics 提供的 Jenks natural breaks 实现
-        // 它返回的是一个包含 numBreaks 个数组的数组，每个子数组是一个聚类
-        // 我们需要每个聚类的最大值作为分界点
         const clusters = ss.ckmeans(validValues, numBreaks);
-        const jenksBreaks = clusters.map(cluster => cluster[cluster.length - 1]);
-
-        // 确保返回的 breaks 是递增且唯一的
+        let jenksBreaks = clusters.map(cluster => cluster[cluster.length - 1]);
         let uniqueBreaks = [...new Set(jenksBreaks)].sort((a, b) => a - b);
-
-        // 有时 ckmeans 可能因为数据分布返回的分界点数量不足
-        // 确保最后一个分界点是数据中的最大值，并且分界点数量至少和 numBreaks 相同（如果可能）
-        if (validValues.length > 0 && uniqueBreaks.length > 0 && uniqueBreaks[uniqueBreaks.length - 1] < Math.max(...validValues)) {
+        if (validValues.length > 0 && uniqueBreaks.length > 0 && uniqueBreaks[uniqueBreaks.length - 1] < Math.max(...validValues))
              uniqueBreaks.push(Math.max(...validValues));
-        }
-
-        // 如果最终的分界点数量不足，回退到分位数分级
-        if (uniqueBreaks.length < numBreaks) {
-            console.warn(`Not enough unique values or clusters for ${numBreaks} natural breaks. Falling back to quantile breaks.`);
-            return calculateQuantileBreaks(validValues, numBreaks);
-        }
-        return uniqueBreaks.slice(0, numBreaks); // 返回 numBreaks 个分界点
+        if (uniqueBreaks.length < numBreaks) return calculateQuantileBreaks(validValues, numBreaks);
+        return uniqueBreaks.slice(0, numBreaks);
     } catch (e) {
-        console.error("Error calculating natural breaks, falling back to quantile breaks:", e);
-        // 出现错误时回退到分位数分级
+        console.error("Error calculating natural breaks, fallback to quantile:", e);
         return calculateQuantileBreaks(validValues, numBreaks);
     }
 }
 
-
-// 根据值和分级点获取颜色函数
 function getChoroplethColor(value, breaks, colors) {
-    if (value === undefined || value === null || isNaN(value)) return 'rgba(0,0,0,0)'; // 默认透明
+    if (value === undefined || value === null || isNaN(value)) return 'rgba(0,0,0,0)';
     for (let i = 0; i < breaks.length; i++) {
-        if (value <= breaks[i]) {
-            return colors[i];
-        }
+        if (value <= breaks[i]) return colors[i];
     }
-    // 如果值大于所有分界点，使用最后一个颜色
     return colors[colors.length - 1];
 }
 
-// 从 all.json 获取数据函数
-async function fetchAllData() {
+// ------------------ 通用省份分级加载 ------------------
+async function fetchProvinceCountsGeneric(dataType, fileName, colorScheme) {
+    const folder = DATA_FOLDER_MAP[dataType] || dataType.toLowerCase();
+    const filePath = `data/geodata/${folder}/${fileName}`;
+    let counts = {};
+
     try {
-        const response = await fetch('data/describe/all.json');
+        const response = await fetch(filePath);
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            console.warn(`未找到省份统计文件: ${filePath}`);
+            return { counts: {}, breaks: [] };
         }
-        allData = await response.json();
-        populateDataTypeDropdown();
-    } catch (error) {
-        console.error('Error fetching all.json:', error);
-        dataDescriptionParagraph.textContent = '数据加载错误。请稍后重试。';
+        counts = await response.json();
+    } catch (err) {
+        console.error(`加载 ${filePath} 出错:`, err);
+        return { counts: {}, breaks: [] };
     }
+
+    const provinceFeatures = chinaVectorSource.getFeatures();
+    const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
+    allProvinceNames.forEach(name => {
+        if (counts[name] === undefined) counts[name] = 0;
+    });
+
+    const values = Object.values(counts).filter(v => typeof v === 'number' && v > 0);
+    const numBreaks = colorScheme.length;
+    let breaks = calculateNaturalBreaks(values, numBreaks);
+    if (breaks.length === 0 && values.length > 0) breaks.push(Math.max(...values));
+
+    return { counts, breaks };
 }
 
-// 分级显示 POI
-async function fetchPoiProvinceCounts(year) {
-    const statsFilePath = `data/geodata/poi/全国(${year}).json`;
-    try {
-        const response = await fetch(statsFilePath);
-        if (!response.ok) {
-            if (response.status === 404) {
-                console.warn(`POI 省份统计文件未找到: ${statsFilePath}，初始化为0`);
-                poiProvinceCounts = {};
-            } else {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-        } else {
-            poiProvinceCounts = await response.json();
-        }
-
-        const provinceFeatures = chinaVectorSource.getFeatures();
-        const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
-        allProvinceNames.forEach(name => {
-            if (poiProvinceCounts[name] === undefined) poiProvinceCounts[name] = 0;
-        });
-
-        const counts = Object.values(poiProvinceCounts).filter(v => v > 0);
-        const numBreaks = POI_CHOROPLETH_COLORS.length;
-        POI_CHOROPLETH_BREAKS = calculateQuantileBreaks(counts, numBreaks);
-        if (POI_CHOROPLETH_BREAKS.length === 0 && counts.length > 0)
-            POI_CHOROPLETH_BREAKS.push(Math.max(...counts));
-
-        console.log(`已获取/处理 ${year} 年 POI 省份计数`, poiProvinceCounts);
-        console.log('POI 分级统计图分级点:', POI_CHOROPLETH_BREAKS);
-
-    } catch (error) {
-        console.error(`获取/处理 ${statsFilePath} 出错:`, error);
-        poiProvinceCounts = {};
-        POI_CHOROPLETH_BREAKS = [];
-    }
-}
-
-// 分级显示建筑足迹
-async function fetchBuildingProvinceCounts(year) {
-    const statsFilePath = `data/geodata/building/全国(${year}).json`;
-    try {
-        const response = await fetch(statsFilePath);
-        if (!response.ok) {
-            if (response.status === 404) {
-                console.warn(`建筑省份统计文件未找到: ${statsFilePath}，初始化为0`);
-                buildingProvinceCounts = {};
-            } else {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-        } else {
-            buildingProvinceCounts = await response.json();
-        }
-
-        const provinceFeatures = chinaVectorSource.getFeatures();
-        const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
-        allProvinceNames.forEach(name => {
-            if (buildingProvinceCounts[name] === undefined) buildingProvinceCounts[name] = 0;
-        });
-
-        const counts = Object.values(buildingProvinceCounts).filter(v => v > 0);
-        const numBreaks = BUILDING_CHOROPLETH_COLORS.length;
-        BUILDING_CHOROPLETH_BREAKS = calculateQuantileBreaks(counts, numBreaks);
-        if (BUILDING_CHOROPLETH_BREAKS.length === 0 && counts.length > 0)
-            BUILDING_CHOROPLETH_BREAKS.push(Math.max(...counts));
-
-        console.log(`已获取/处理 ${year} 年建筑省份计数`, buildingProvinceCounts);
-        console.log('建筑分级统计图分级点:', BUILDING_CHOROPLETH_BREAKS);
-
-    } catch (error) {
-        console.error(`获取/处理 ${statsFilePath} 出错:`, error);
-        buildingProvinceCounts = {};
-        BUILDING_CHOROPLETH_BREAKS = [];
-    }
-}
-
-// 分级显示 Other 类型
-async function fetchOtherProvinceCounts(dataName) {
-    const statsFilePath = `data/geodata/other/全国(${dataName}).json`; // 不用 encodeURIComponent
-    try {
-        const response = await fetch(statsFilePath);
-        if (!response.ok) {
-            if (response.status === 404) {
-                console.warn(`Other 省份统计文件未找到: ${statsFilePath}，初始化为0`);
-                otherProvinceCounts = {};
-            } else {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-        } else {
-            otherProvinceCounts = await response.json();
-        }
-
-        const provinceFeatures = chinaVectorSource.getFeatures();
-        const allProvinceNames = new Set(provinceFeatures.map(f => f.get('fullname')));
-        allProvinceNames.forEach(name => {
-            if (otherProvinceCounts[name] === undefined) otherProvinceCounts[name] = 0;
-        });
-
-        const counts = Object.values(otherProvinceCounts).filter(v => v > 0);
-        const numBreaks = OTHER_CHOROPLETH_COLORS.length;
-        OTHER_CHOROPLETH_BREAKS = calculateQuantileBreaks(counts, numBreaks);
-        if (OTHER_CHOROPLETH_BREAKS.length === 0 && counts.length > 0)
-            OTHER_CHOROPLETH_BREAKS.push(Math.max(...counts));
-
-        console.log(`已获取/处理 Other 类型 "${dataName}" 省份计数`, otherProvinceCounts);
-        console.log('Other 分级统计图分级点:', OTHER_CHOROPLETH_BREAKS);
-
-    } catch (error) {
-        console.error(`获取/处理 ${statsFilePath} 出错:`, error);
-        otherProvinceCounts = {};
-        OTHER_CHOROPLETH_BREAKS = [];
-    }
-}
-
-
-// 填充数据类型下拉菜单函数
+// ------------------ 数据下拉菜单 ------------------
 function populateDataTypeDropdown() {
     dataTypeSelect.innerHTML = '';
     allData.forEach(item => {
@@ -288,7 +154,6 @@ function populateDataTypeDropdown() {
     populateCityDropdown();
 }
 
-// 根据选定的数据类型填充城市下拉菜单函数
 function populateCityDropdown() {
     citySelect.innerHTML = '';
     const selectedDataType = dataTypeSelect.value;
@@ -304,90 +169,58 @@ function populateCityDropdown() {
     }
 }
 
-// 更新描述段落函数
 function updateDescription() {
     const selectedDataType = dataTypeSelect.value;
     const selectedDataItem = allData.find(item => item.type === selectedDataType);
-    if (selectedDataItem && selectedDataItem.description) {
-        dataDescriptionParagraph.textContent = selectedDataItem.description;
-    } else {
-        dataDescriptionParagraph.textContent = '此数据类型无可用描述。';
-    }
+    dataDescriptionParagraph.textContent = selectedDataItem?.description || '此数据类型无可用描述。';
 }
 
-
-// 在地图上加载和显示 GeoJSON 数据函数
+// ------------------ 加载 GeoJSON 数据 ------------------
 async function loadGeoJSONData(dataType, city) {
-    // 始终首先重置 chinaVectorLayer 样式
     chinaVectorLayer.setStyle(defaultChinaLayerStyle);
-    // 移除任何现有的特定 GeoJSON 图层（点、线、面）
     if (currentGeoJSONLayer) {
         map.removeLayer(currentGeoJSONLayer);
         currentGeoJSONLayer = null;
     }
 
-    if (!dataType || !city) {
-        console.warn("未选择数据类型或城市。无法加载 GeoJSON。");
-        return;
-    }
+    if (!dataType || !city) return;
 
-    // --- 省份分级统计图的特殊处理 ---
+    // ------------------ 全国级数据分省显示 ------------------
     if (city.startsWith('全国(')) {
-        let year = null;
-        let dataName = null;
+        const folderMap = {
+            'POI': 'poi',
+            '建筑足迹': 'building',
+            '其他门类': 'other'
+        };
+        const folder = folderMap[dataType] || dataType.toLowerCase();
+        const fileName = `${city}.json`;
 
-        if (dataType === 'POI' || dataType === '建筑足迹') {
-            const yearMatch = city.match(/\((\d{4})\)/);
-            year = yearMatch ? yearMatch[1] : null;
-            if (!year) {
-                dataDescriptionParagraph.textContent = "错误：无法提取年份";
-                return;
-            }
-        } else if (dataType === '其他门类') {
-            const nameMatch = city.match(/全国\((.+)\)/);
-            dataName = nameMatch?.[1]?.trim() || null;
-            if (!dataName) {
-                dataDescriptionParagraph.textContent = "错误：无法提取 Other 数据名称";
-                return;
-            }
-        }
+        const COLOR_MAP = {
+            'POI': ['#f7fbff','#deebf7','#c6dbef','#9ecae1','#6baed6','#3182bd','#08519c'],
+            '建筑足迹': ['#fff5f0','#fee0d2','#fcbba1','#fc9272','#fb6a4a','#de2d26','#a50f15'],
+            '其他门类': ['#f7f7f7','#e0e0e0','#c9c9c9','#b0b0b0','#969696','#7d7d7d','#525252'],
+            '默认': ['#edf8e9','#bae4b3','#74c476','#31a354','#006d2c']
+        };
+        const colorScheme = COLOR_MAP[dataType] || COLOR_MAP['默认'];
 
-        // ✅ 定义外部变量，避免作用域问题
-        let counts, breaks, colors;
-
-        if (dataType === 'POI') {
-            await fetchPoiProvinceCounts(year);
-            counts = poiProvinceCounts;
-            breaks = POI_CHOROPLETH_BREAKS;
-            colors = POI_CHOROPLETH_COLORS;
-        } else if (dataType === '建筑足迹') {
-            await fetchBuildingProvinceCounts(year);
-            counts = buildingProvinceCounts;
-            breaks = BUILDING_CHOROPLETH_BREAKS;
-            colors = BUILDING_CHOROPLETH_COLORS;
-        } else if (dataType === '其他门类') {
-            await fetchOtherProvinceCounts(dataName);
-            counts = otherProvinceCounts;
-            breaks = OTHER_CHOROPLETH_BREAKS;
-            colors = OTHER_CHOROPLETH_COLORS;
-        }
+        const { counts, breaks } = await fetchProvinceCountsGeneric(folder, fileName, colorScheme);
 
         if (!counts || Object.keys(counts).length === 0) {
-            dataDescriptionParagraph.textContent = `${dataType} 省份数据 (${year || dataName}) 不可用`;
+            dataDescriptionParagraph.textContent = `${dataType} 全国数据不可用`;
             return;
         }
 
         chinaVectorLayer.setStyle(function(feature) {
             const provinceName = feature.get('fullname');
-            const count = counts[provinceName] || 0;                  
-            const color = getChoroplethColor(count, breaks, colors); 
+            const count = counts[provinceName] || 0;
+            const color = getChoroplethColor(count, breaks, colorScheme);
 
             const styles = [new ol.style.Style({
                 fill: new ol.style.Fill({ color }),
                 stroke: new ol.style.Stroke({ color: 'rgba(0,0,0,0.5)', width: 0.8 })
             })];
 
-            if (feature.getGeometry() && feature.getGeometry().getType().includes('Polygon')) {
+            if (feature.getGeometry()?.getType().includes('Polygon')) {
                 const centroid = ol.extent.getCenter(feature.getGeometry().getExtent());
                 styles.push(new ol.style.Style({
                     geometry: new ol.geom.Point(centroid),
@@ -404,205 +237,80 @@ async function loadGeoJSONData(dataType, city) {
         });
 
         map.getView().fit(chinaVectorSource.getExtent(), { padding: [50,50,50,50], duration: 1000 });
-        console.log(`已显示 ${city} 的 ${dataType} 分级统计图`);
+        console.log(`✅ 已显示 ${city} 的 ${dataType} 全国分级统计图`);
+        return;
     }
 
-
-    // --- 其他 GeoJSON 类型（点、线、自定义多边形）的通用处理 ---
+    // ------------------ 其他点/线/面类型 ------------------
     let geoJSONBasePath = 'data/geodata/';
     let specificFolder = '';
-    let layerStyle = null; // 用于存储当前图层的样式
+    let layerStyle = null;
 
     switch (dataType) {
-        case 'AOI':
-            specificFolder = 'aoi';
-            layerStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(100, 149, 237, 0.4)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(65, 105, 225, 0.8)',
-                    width: 2
-                })
-            });
-            break;
-        case 'OD流':
-            specificFolder = 'od';
-            // OD流的样式将动态生成，依赖于数据加载完成后的num值统计
-            layerStyle = (feature) => {
-                const num = feature.get('num');
-                // 使用 odNumBreaks 进行颜色分级
-                const color = getChoroplethColor(num, odNumBreaks, OD_FIVE_CLASS_COLORS);
-                // 宽度也根据颜色索引来
-                const widthIndex = OD_FIVE_CLASS_COLORS.findIndex(c => c === color);
-                const width = OD_FIVE_CLASS_WIDTHS[widthIndex !== -1 ? widthIndex : 0]; // 找不到则默认最小宽度
-
-                return new ol.style.Style({
-                    stroke: new ol.style.Stroke({
-                        color: color,
-                        width: width
-                    }),
-                });
-            };
-            break;
-        case 'POI':
-            specificFolder = 'poi';
-            layerStyle = new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 7,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(0, 128, 0, 0.7)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(0, 100, 0, 1)',
-                        width: 1
-                    })
-                })
-            });
-            break;
-        case '微博签到':
-            specificFolder = 'weibo';
-            layerStyle = new ol.style.Style({
-                image: new ol.style.Circle({
-                    radius: 5,
-                    fill: new ol.style.Fill({
-                        color: 'rgba(255, 99, 132, 0.7)'
-                    }),
-                    stroke: new ol.style.Stroke({
-                        color: 'rgba(255, 0, 0, 1)',
-                        width: 1
-                    })
-                })
-            });
-            break;
-        case '移动轨迹':
-            specificFolder = 'trajectory';
-            layerStyle = new ol.style.Style({
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(1, 43, 82, 0.93)',
-                    width: 3
-                }),
-            });
-            break;
-        default:
-            console.warn(`未知数据类型: ${dataType}。使用默认样式。`);
-            layerStyle = new ol.style.Style({
-                fill: new ol.style.Fill({
-                    color: 'rgba(255, 0, 0, 0.3)'
-                }),
-                stroke: new ol.style.Stroke({
-                    color: 'rgba(255, 0, 0, 0.8)',
-                    width: 2
-                })
-            });
+        case 'AOI': specificFolder = 'aoi'; layerStyle = new ol.style.Style({fill: new ol.style.Fill({color:'rgba(100,149,237,0.4)'}), stroke: new ol.style.Stroke({color:'rgba(65,105,225,0.8)', width:2})}); break;
+        case 'OD流': specificFolder = 'od'; layerStyle = (f)=>{const num=f.get('num');const color=getChoroplethColor(num, odNumBreaks,['#fee0d2','#fc9272','#fb6a4a','#de2d26','#a50f15']);const w=[1,2,3,4,5][['#fee0d2','#fc9272','#fb6a4a','#de2d26','#a50f15'].indexOf(color)]; return new ol.style.Style({stroke:new ol.style.Stroke({color,width:w})});}; break;
+        case 'POI': specificFolder = 'poi'; layerStyle = new ol.style.Style({image:new ol.style.Circle({radius:7, fill:new ol.style.Fill({color:'rgba(0,128,0,0.7)'}), stroke:new ol.style.Stroke({color:'rgba(0,100,0,1)', width:1})})}); break;
+        case '微博签到': specificFolder = 'weibo'; layerStyle = new ol.style.Style({image:new ol.style.Circle({radius:5, fill:new ol.style.Fill({color:'rgba(255,99,132,0.7)'}), stroke:new ol.style.Stroke({color:'rgba(255,0,0,1)', width:1})})}); break;
+        case '移动轨迹': specificFolder = 'trajectory'; layerStyle = new ol.style.Style({stroke:new ol.style.Stroke({color:'rgba(1,43,82,0.93)', width:3})}); break;
+        default: specificFolder = dataType.toLowerCase(); layerStyle = new ol.style.Style({fill:new ol.style.Fill({color:'rgba(255,0,0,0.3)'}), stroke:new ol.style.Stroke({color:'rgba(255,0,0,0.8)', width:2})});
     }
 
-    const geoJSONFileName = `${city}.geojson`;
-    const geoJSONFilePath = `${geoJSONBasePath}${specificFolder}/${geoJSONFileName}`;
-
-    console.log('尝试从以下路径加载 GeoJSON:', geoJSONFilePath);
-
-    const newVectorSource = new ol.source.Vector({
-        format: new ol.format.GeoJSON(),
-        url: geoJSONFilePath
-    });
-
-    const newVectorLayer = new ol.layer.Vector({
-        source: newVectorSource,
-        // 样式在源加载完成后设置，因为需要所有feature的num值
-        style: layerStyle
-    });
-
+    const geoJSONFilePath = `${geoJSONBasePath}${specificFolder}/${city}.geojson`;
+    const newVectorSource = new ol.source.Vector({format: new ol.format.GeoJSON(), url: geoJSONFilePath});
+    const newVectorLayer = new ol.layer.Vector({source: newVectorSource, style: layerStyle});
     map.addLayer(newVectorLayer);
     currentGeoJSONLayer = newVectorLayer;
 
-    // 当 GeoJSON 源数据加载完成后，如果是 OD 流，则计算 num 自然间断分级
     newVectorSource.once('change', function() {
         if (newVectorSource.getState() === 'ready') {
-            const features = newVectorSource.getFeatures();
-            if (features.length > 0) {
-                if (dataType === 'OD流') {
-                    const numValues = features.map(f => f.get('num')).filter(v => typeof v === 'number' && !isNaN(v));
-                    const numBreaksCount = OD_FIVE_CLASS_COLORS.length; // 5个级别
-
-                    // 使用自然间断分级
-                    odNumBreaks = calculateNaturalBreaks(numValues, numBreaksCount);
-
-                    console.log('OD流 num values:', numValues);
-                    console.log('OD流 Natural Breaks:', odNumBreaks);
-                    // 重新设置样式以应用新的分级
-                    newVectorLayer.setStyle(layerStyle); // 触发图层重绘
-                }
-
-                const extent = newVectorSource.getExtent();
-                map.getView().fit(extent, {
-                    padding: [50, 50, 50, 50],
-                    duration: 1000
-                });
-            } else {
-                console.warn(`GeoJSON 已加载但 ${city} 不包含任何要素。`);
-                dataDescriptionParagraph.textContent = `未找到 ${city} 的空间数据。`;
+            if (dataType === 'OD流') {
+                const features = newVectorSource.getFeatures();
+                const numValues = features.map(f=>f.get('num')).filter(v=>typeof v==='number'&&!isNaN(v));
+                odNumBreaks = calculateNaturalBreaks(numValues, 5);
+                newVectorLayer.setStyle(layerStyle);
             }
+            map.getView().fit(newVectorSource.getExtent(), {padding:[50,50,50,50], duration:1000});
         }
     });
 
-    newVectorSource.on('error', function(event) {
-        console.error('从以下路径加载 GeoJSON 时出错:', geoJSONFilePath, event);
-        dataDescriptionParagraph.textContent = `加载 ${city} 的空间数据时出错。请确保文件存在于: ${geoJSONFilePath}`;
+    newVectorSource.on('error', function(e){
+        console.error('加载 GeoJSON 出错:', geoJSONFilePath, e);
+        dataDescriptionParagraph.textContent = `加载 ${city} 空间数据出错`;
     });
 }
 
-// 根据当前下拉菜单选择更新地图和描述函数
+// ------------------ 更新地图 ------------------
 function updateMapAndDescription() {
-    const selectedDataType = dataTypeSelect.value;
-    const selectedCity = citySelect.value;
-
     updateDescription();
-    loadGeoJSONData(selectedDataType, selectedCity);
+    loadGeoJSONData(dataTypeSelect.value, citySelect.value);
 }
 
-// *** 新函数：将地图重置到初始状态 ***
+// ------------------ 重置地图 ------------------
 function resetMap() {
-    // 1. 移除当前加载的任何自定义 GeoJSON 图层
-    if (currentGeoJSONLayer) {
-        map.removeLayer(currentGeoJSONLayer);
-        currentGeoJSONLayer = null;
-    }
-
-    // 2. 将中国边界图层的样式重置为其默认样式
+    if (currentGeoJSONLayer) map.removeLayer(currentGeoJSONLayer);
+    currentGeoJSONLayer = null;
     chinaVectorLayer.setStyle(defaultChinaLayerStyle);
-
-    // 3. 将地图视图调整回中国边界图层的范围
-    // 这有效地将其带回到“初始状态”的缩放和中心。
-    const extent = chinaVectorSource.getExtent();
-    map.getView().fit(extent, {
-        padding: [50, 50, 50, 50],
-        duration: 1000
-    });
-
-    // 4. 将下拉菜单重置为其默认（第一个）选项
-    if (dataTypeSelect.options.length > 0) {
-        dataTypeSelect.selectedIndex = 0;
-        populateCityDropdown();
-    }
-    if (citySelect.options.length > 0) {
-        citySelect.selectedIndex = 0;
-    }
-
-    // 5. 清除数据描述段落
-    dataDescriptionParagraph.textContent = '';
-
-    console.log("地图已重置到初始状态。");
+    map.getView().fit(chinaVectorSource.getExtent(), {padding:[50,50,50,50], duration:1000});
+    if (dataTypeSelect.options.length>0) {dataTypeSelect.selectedIndex=0; populateCityDropdown();}
+    if (citySelect.options.length>0) citySelect.selectedIndex=0;
+    dataDescriptionParagraph.textContent='';
 }
 
-// 事件监听器
-dataTypeSelect.addEventListener('change', () => {
-    populateCityDropdown();
-});
-
+// ------------------ 事件绑定 ------------------
+dataTypeSelect.addEventListener('change', populateCityDropdown);
 refreshMapButton.addEventListener('click', updateMapAndDescription);
-resetMapButton.addEventListener('click', resetMap); // 为新的重置地图按钮添加事件监听器
+resetMapButton.addEventListener('click', resetMap);
 
-
-// 初始数据获取和设置（填充下拉菜单，但 *不* 加载地图数据）
+// ------------------ 初始数据加载 ------------------
+async function fetchAllData() {
+    try {
+        const res = await fetch('data/describe/all.json');
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        allData = await res.json();
+        populateDataTypeDropdown();
+    } catch(e){
+        console.error('加载 all.json 出错:', e);
+        dataDescriptionParagraph.textContent='数据加载错误';
+    }
+}
 fetchAllData();

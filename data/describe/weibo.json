@@ -168,5 +168,22 @@
     "url": "https://pan.baidu.com/s/1sNjYN_V_Rdg2k0PNshOWsQ?pwd=1111",
     "level": "市级",
     "city": "重庆市"
+  },
+  {
+    "id": "weibo-10",
+    "title": "全国历史微博签到数据",
+    "type": "微博签到",
+    "description": "包含全国超千万微博用户的签到信息，约5万条记录",
+    "status": "已验证",
+    "size": "9.98GB",
+    "updateTime": "2020",
+    "provider": "新浪微博",
+    "tags": ["微博数据", "社交网络", "城市活动", "时空分布"],
+    "formats": ["CSV"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1_xDaX0FNlJCNdiRLQRt9QQ?pwd=1111",
+    "level": "国家级",
+    "city": "全国"
   }
 ]
