@@ -32,5 +32,22 @@
     "url": "https://pan.baidu.com/s/1tfDozezGacvngnlpjS6pgw?pwd=1111",
     "level": "国家级",
     "city": "全国"
+  },
+  {
+    "id": "other-2",
+    "title": "手机基站数据",
+    "type": "其他门类",
+    "description": "包含全国100万条记录",
+    "status": "已验证",
+    "size": "100.0MB",
+    "updateTime": "2022",
+    "provider": "OpenCellid",
+    "tags": ["通信", "负荷预测", "空间计量", "场景特征"],
+    "formats": ["CSV"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1puLUWrNRwf-MeKaBCkx3JA?pwd=1111",
+    "level": "国家级",
+    "city": "全国"
   }
 ]
