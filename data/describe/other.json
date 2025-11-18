@@ -49,5 +49,22 @@
     "url": "https://pan.baidu.com/s/1puLUWrNRwf-MeKaBCkx3JA?pwd=1111",
     "level": "国家级",
     "city": "全国"
+  },
+  {
+    "id": "other-3",
+    "title": "全国县域洪涝数据",
+    "type": "其他门类",
+    "description": "包含全国3748条记录",
+    "status": "已验证",
+    "size": "1.0MB",
+    "updateTime": "2022",
+    "provider": "新闻文本",
+    "tags": ["城市洪涝", "时空模式", "网络新闻媒体", "生态学"],
+    "formats": ["CSV"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1z4q0tJ7lkG-C6qlkxBwweA?pwd=1111",
+    "level": "国家级",
+    "city": "全国"
   }
 ]
