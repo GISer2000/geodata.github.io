@@ -194,7 +194,7 @@
     "status": "已验证",
     "size": "4.10GB",
     "updateTime": "2023",
-    "provider": "百度地图",
+    "provider": "高德地图",
     "tags": ["地理信息", "城市空间", "公共服务", "地标建筑"],
     "formats": ["CSV"],
     "isDownloadable": true,
