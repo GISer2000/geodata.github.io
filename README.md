@@ -8,13 +8,6 @@
 ```plaintext
 geodata.github.io/
 ├── data/
-│   ├── geodata/
-│   │   ├── aoi/
-│   │   ├── od/
-│   │   ├── poi/
-│   │   ├── trajectory/
-│   │   ├── other/
-│   │   └── weibo/
 │   └── describe/
 │       ├── aoi.json
 │       ├── building.json
@@ -32,10 +25,11 @@ geodata.github.io/
 │   ├── trajectory.png
 │   └── weibo.png
 ├── js/
+│   ├── chart.js
 │   ├── datasets-loader.js
 │   ├── dynamic-renderer.js
-│   ├── map.js
 │   ├── other.js
+│   ├── search.js
 │   └── submit.js
 ├── README.md
 └── index.html              
