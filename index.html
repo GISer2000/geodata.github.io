@@ -5,26 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GeoDataHub - 地理大数据下载平台</title>
 
+
     <script src="https://unpkg.com/simple-statistics@7.8.0/dist/simple-statistics.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.8/dist/chart.umd.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/ol@7.3.0/dist/ol.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/ol@7.3.0/ol.css" rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/1.0.7/iconify-icon.min.js"></script>
-    
 
-    
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#1E40AF', // 深蓝主色调，表示专业和信任
-                        secondary: '#3B82F6', // 辅助蓝色
-                        accent: '#F97316', // 橙色强调色
-                        dark: '#1E293B', // 深色背景
-                        light: '#F8FAFC', // 浅色背景
+                        primary: '#1E40AF',
+                        secondary: '#3B82F6',
+                        accent: '#F97316',
+                        dark: '#1E293B',
+                        light: '#F8FAFC',
                     },
                     fontFamily: {
                         inter: ['Inter', 'system-ui', 'sans-serif'],
@@ -70,7 +67,6 @@
                     <a href="#home" class="text-gray-700 hover:text-primary font-medium transition-colors">首页</a>
                     <a href="#datasets" class="text-gray-700 hover:text-primary font-medium transition-colors">数据集</a>
                     <a href="#features" class="text-gray-700 hover:text-primary font-medium transition-colors">平台特性</a>
-                    <a href="#showcase" class="text-gray-700 hover:text-primary font-medium transition-colors">数据展示</a>
                     <a href="#download" class="text-gray-700 hover:text-primary font-medium transition-colors">下载中心</a>
                     <a href="#contact" class="text-gray-700 hover:text-primary font-medium transition-colors">联系我们</a>
                 </nav>
@@ -86,13 +82,13 @@
                 <a href="#home" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">首页</a>
                 <a href="#datasets" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">数据集</a>
                 <a href="#features" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">平台特性</a>
-                <a href="#showcase" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">数据展示</a>
                 <a href="#download" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">下载中心</a>
                 <a href="#contact" class="block text-gray-700 hover:text-primary font-medium py-2 transition-colors">联系我们</a>
             </div>
         </div>
     </header>
-    <!-- 总览 -->
+
+    <!-- 总览 Hero 区块 (移除地图模块后保留核心介绍) -->
     <section id="home" class="pt-28 pb-16 md:pt-40 md:pb-24 bg-gradient-to-br from-primary/5 to-secondary/5">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex flex-col md:flex-row items-center">
@@ -105,50 +101,51 @@
                     </p>
                     <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
                         <a href="#datasets" class="btn-primary">
-                            <i class="fa-solid fa-database mr-2"></i>浏览数据集
+                            <i class="fa-solid fa-database mr-2"></i>数据集概况
                         </a>
-                        <a href="#showcase" class="btn-secondary">
-                            <i class="fa-solid fa-map-marked-alt mr-2"></i>数据可视化
+                        <a href="#download" class="btn-secondary">
+                            <i class="fa-solid fa-download mr-2"></i>下载中心
                         </a>
                     </div>
                     
                     <div class="flex flex-wrap gap-8 mt-12">
                         <div class="text-center">
-                            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">40+</div>
-                            <div class="text-gray-600">数据集</div>
+                            <div class="text-4xl text-primary mb-2">🗺️</div>
+                            <div class="text-xl font-bold text-primary mb-1">全品类</div>
+                            <div class="text-gray-500 text-sm">7+数据类型</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">100GB+</div>
-                            <div class="text-gray-600">数据量</div>
+                            <div class="text-4xl text-primary mb-2">🏙️</div>
+                            <div class="text-xl font-bold text-primary mb-1">广覆盖</div>
+                            <div class="text-gray-500 text-sm">覆盖中国全域</div>
                         </div>
                         <div class="text-center">
-                            <div class="text-3xl md:text-4xl font-bold text-primary mb-1">(-∞,+∞)</div>
-                            <div class="text-gray-600">用户</div>
+                            <div class="text-4xl text-primary mb-2">🔄</div>
+                            <div class="text-xl font-bold text-primary mb-1">常更新</div>
+                            <div class="text-gray-500 text-sm">季度数据迭代</div>
                         </div>
                     </div>
+
                 </div>
                 
                 <div class="md:w-1/2 relative">
                     <div class="relative z-10 rounded-xl overflow-hidden shadow-2xl transform hover:scale-[1.02] transition-transform duration-500">
                         <a href="https://www.nature.com/articles/s42949-024-00141-4" target="_blank">
-                        <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs42949-024-00141-4/MediaObjects/42949_2024_141_Fig1_HTML.png?as=webp" alt="地理大数据展示" class="w-full h-auto">
-                        <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end">
-                            <div style="position: absolute; top: 0; left: 0; padding: 12px; color: rgb(0, 0, 0);">
-                                <h3 class="text-xl font-bold mb-2">多源地理数据</h3>
-                                <p class="text-black/90">探索城市空间结构与人类活动模式</p>
+                            <img src="https://media.springernature.com/full/springer-static/image/art%3A10.1038%2Fs42949-024-00141-4/MediaObjects/42949_2024_141_Fig1_HTML.png?as=webp" alt="地理大数据展示" class="w-full h-auto">
+                            <div class="absolute inset-0 bg-gradient-to-t from-primary/60 to-transparent flex items-end">
+                                <div style="position: absolute; top: 0; left: 0; padding: 12px; color: rgb(0, 0, 0);">
+                                    <h3 class="text-xl font-bold mb-2">多源地理数据</h3>
+                                    <p class="text-black/90">探索城市空间结构与人类活动模式</p>
+                                </div>
                             </div>
-                        </div>
                         </a>
                     </div>
-                    
-                    <div class="absolute -bottom-6 -left-6 w-24 h-24 bg-accent/20 rounded-full blur-xl"></div>
-                    <div class="absolute -top-6 -right-6 w-32 h-32 bg-primary/20 rounded-full blur-xl"></div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 数据集 -->
+    <!-- 数据集展示卡片区 -->
     <section id="datasets" class="py-16 bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -157,7 +154,7 @@
             </div>
             
             <div id="datasets-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <!-- 数据集卡片将在这里动态生成 -->
+                <!-- 数据集卡片动态生成 -->
             </div>
             
             <div class="text-center mt-12">
@@ -168,8 +165,7 @@
         </div>
     </section>
 
-
-    <!-- 平台说明 -->
+    <!-- 平台特性说明 (保持不变) -->
     <section id="features" class="section-padding bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
@@ -190,8 +186,8 @@
                     <div class="w-14 h-14 bg-primary/10 rounded-lg flex items-center justify-center mb-6">
                         <i class="fa-solid fa-chart-line text-2xl text-primary"></i>
                     </div>
-                    <h3 class="text-xl font-bold mb-3">数据可视化</h3>
-                    <p class="text-gray-600">随机抽取数据进行展示</p>
+                    <h3 class="text-xl font-bold mb-3">数据统计概览</h3>
+                    <p class="text-gray-600">提供关键指标统计与数据分类分布，辅助快速了解数据资源</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
@@ -199,7 +195,7 @@
                         <i class="fa-solid fa-download text-2xl text-primary"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">便捷下载</h3>
-                    <p class="text-gray-600">用的百度网盘</p>
+                    <p class="text-gray-600">百度网盘高速下载，支持筛选数据类型、区域、行政级别等</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
@@ -207,7 +203,7 @@
                         <i class="fa-solid fa-shield-alt text-2xl text-primary"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">数据安全</h3>
-                    <p class="text-gray-600">简单的数据下载平台，不会收集用户数据</p>
+                    <p class="text-gray-600">简单的数据下载平台，不会收集用户数据，保障隐私</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
@@ -215,7 +211,7 @@
                         <i class="fa-solid fa-users text-2xl text-primary"></i>
                     </div>
                     <h3 class="text-xl font-bold mb-3">用户支持</h3>
-                    <p class="text-gray-600">有问题可以邮箱联系</p>
+                    <p class="text-gray-600">有问题可以邮箱联系，及时解答数据使用疑问</p>
                 </div>
                 
                 <div class="bg-white p-8 rounded-xl shadow-md card-hover">
@@ -229,81 +225,87 @@
         </div>
     </section>
 
-    <!-- 可视化 -->
-    <section id="showcase" class="section-padding bg-white">
+    <!-- 数据统计展示模块（原地图模块区域被替换为简洁的统计可视化，便于扩展数据量展示） -->
+    <section id="statistics" class="section-padding bg-white">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-16">
-                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">数据可视化展示</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">探索地理数据的空间分布特征与模式</p>
+            <div class="text-center mb-12">
+                <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">数据资源总览</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">平台收录的数据集类型、地区覆盖与关键指标</p>
             </div>
-
-            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
-                <div class="flex flex-col lg:flex-row">
-                    
-                    <div class="lg:w-2/3 h-[771px] relative" id="mapContainer"> <!-- 地图 -->
-                        <div id="map" class="w-full h-full"></div>
-
-                        <div class="absolute top-2 left-8 bg-white/90 backdrop-blur-sm rounded-lg shadow-md p-3 z-10", style="width: 150px;">
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">数据类型</label>
-                                <select id="dataType" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-3 focus:ring-primary/50">
-                                    </select>
-                            </div>
-
-                            <div class="mb-3">
-                                <label class="block text-sm font-medium text-gray-700 mb-1">区域</label>
-                                <select id="citySelect" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50">
-                                    </select>
-                            </div>
-
-                            <button id="refreshMap" class="w-full btn-primary text-sm">
-                                <i class="fa-solid fa-refresh mr-1"></i> 更新地图
-                            </button>
-                            <button id="resetMap" class="w-full btn-secondary text-sm mt-2">
-                                <i class="fa-solid fa-undo mr-1"></i> 复原地图
-                            </button>
-
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- 统计卡片左侧: 关键指标 -->
+                <div class="bg-gray-50 rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold mb-5 flex items-center"><i class="fa-solid fa-chart-simple text-primary mr-2"></i> 核心指标</h3>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">45+</div>
+                            <div class="text-gray-600 text-sm">数据集总数</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">全国</div>
+                            <div class="text-gray-600 text-sm">覆盖省市</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">7</div>
+                            <div class="text-gray-600 text-sm">数据类别</div>
+                        </div>
+                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                            <div class="text-3xl font-bold text-primary mb-2">2025</div>
+                            <div class="text-gray-600 text-sm">最新更新年份</div>
                         </div>
                     </div>
-                    <div class="lg:w-1/3 p-6 bg-gray-50">
-                        <h3 class="text-xl font-bold mb-4">数据统计信息</h3>
-
-                        <div class="grid grid-cols-2 gap-4 mb-6">
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="text-2xl font-bold text-primary mb-1">999+(持续更新)</div>
-                                <div class="text-sm text-gray-600">总记录数</div>
-                            </div>
-                            <div class="bg-white p-4 rounded-lg shadow-sm">
-                                <div class="text-2xl font-bold text-primary mb-1">46</div>
-                                <div class="text-sm text-gray-600">数据集个数</div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-lg shadow-sm mb-6">
-                            <h4 class="text-lg font-medium mb-3">数据类型分布</h4>
-                            <div class="h-64">
-                                <canvas id="dataTypeChart"></canvas>
-                            </div>
-                        </div>
-
-                        <div class="bg-white p-4 rounded-lg shadow-sm", style="text-align: justify; height: 215px;"> 
-                            <p id="dataDescription">数据描述</p></div>
-                        </div>
+                    <div class="mt-6 p-4 bg-primary/5 rounded-lg">
+                        <p class="text-gray-700 text-sm"><i class="fa-solid fa-circle-info text-primary mr-2"></i>所有数据集均经过整理，提供百度网盘链接，持续扩充中。</p>
                     </div>
                 </div>
+                <!-- 右侧：数据类型分布图表 (Chart.js) -->
+                <div class="bg-gray-50 rounded-xl shadow-md p-6">
+                    <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-chart-pie text-primary mr-2"></i> 数据类型分布</h3>
+                    <div class="h-64">
+                        <canvas id="dataTypeChart"></canvas>
+                    </div>
+                    <p class="text-gray-500 text-xs text-center mt-4">基于当前数据集分类统计</p>
+                </div>
+            </div>
+            <!-- 额外说明：数据更新动态 -->
+            <div class="mt-10 text-center bg-white p-6 rounded-xl shadow-sm border border-gray-100">
+                <div class="flex justify-center items-center space-x-2 text-primary mb-2">
+                    <i class="fa-solid fa-cloud-upload-alt text-2xl"></i>
+                    <span class="font-semibold">数据持续更新中</span>
+                </div>
+                <p class="text-gray-500">随着平台发展，将不断新增城市级POI、实时轨迹、建筑轮廓等数据集，敬请关注。</p>
             </div>
         </div>
     </section>
 
-    <!-- 数据集下载 -->
+    <!-- 数据集下载中心 -->
     <section id="download" class="section-padding bg-gray-50">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-16">
                 <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">数据下载中心</h2>
-                <p class="text-gray-600 max-w-2xl mx-auto">选择合适的数据集进行下载，支持多种格式和区域范围</p>
+                <p class="text-gray-600 max-w-2xl mx-auto">选择合适的数据集进行下载，支持多种格式和区域范围，数据将通过百度网盘获取</p>
             </div>
             
             <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                <!-- 搜索栏 -->
+                <div class="mb-6">
+                    <div class="relative">
+                        <input type="text" 
+                            id="searchInput" 
+                            placeholder="🔍 搜索数据集名称、城市或关键词..." 
+                            class="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
+                        <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
+                        <button id="clearSearchBtn" 
+                                class="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 hidden">
+                            <i class="fa-solid fa-times-circle text-xl"></i>
+                        </button>
+                    </div>
+                    <div class="mt-2 text-xs text-gray-500">
+                        <i class="fa-solid fa-info-circle mr-1"></i>支持按数据集名称、城市、区域、数据类型搜索
+                    </div>
+                </div>
+                
+                <!-- 筛选器 -->
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
                     <div>
                         <label for="dataTypeFilter" class="block text-sm font-medium text-gray-700 mb-2">数据类型</label>
@@ -334,13 +336,21 @@
                     </div>
                 </div>
                 
-                <div class="mt-6 flex justify-center">
-                    <button id="filterButton" class="btn-primary px-8">
-                        <i class="fa-solid fa-filter mr-2"></i> 筛选数据
-                    </button>
+                <!-- 操作按钮行 -->
+                <div class="mt-6 flex justify-between items-center">
+                    <div id="searchResultBadge" class="text-sm text-gray-500 hidden">
+                        <i class="fa-solid fa-filter mr-1"></i>找到 <span id="searchResultCount">0</span> 个结果
+                    </div>
+                        <div class="flex gap-3 justify-center w-full mt-6">
+                            <button id="resetButton" class="px-4 py-2 border border-gray-300 rounded-lg text-gray-600 hover:bg-gray-50 transition-all">
+                                <i class="fa-solid fa-undo-alt mr-2"></i>重置
+                            </button>
+                            <button id="filterButton" class="btn-primary px-8">
+                                <i class="fa-solid fa-filter mr-2"></i>筛选数据
+                            </button>
+                        </div>
                 </div>
             </div>
-                
             
             <div class="bg-white rounded-xl shadow-md p-6 relative">
                 <div id="dynamic-download-list" class="space-y-6">
@@ -348,11 +358,9 @@
                         <i class="fa-solid fa-spinner fa-spin text-primary text-4xl"></i>
                         <span class="ml-3 text-lg text-primary">加载中...</span>
                     </div>
+                    <!-- 动态下载列表内容会由js填充 -->
                 </div>
             </div>
-
-            
-
         </div>
     </section>
 
@@ -413,16 +421,10 @@
                     <div class="mt-8">
                         <h4 class="font-medium mb-3">关注我们</h4>
                         <div class="flex space-x-4">
-                            <a href="https://github.com/GISer2000" 
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                class="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <a href="https://github.com/GISer2000" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300">
                                 <i class="fa-brands fa-github fa-lg"></i>
                             </a>
-                            <a href="https://www.xiaohongshu.com/user/profile/611f08ce00000000010046a3"
-                                target="_blank" 
-                                rel="noopener noreferrer" 
-                                class="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                            <a href="https://www.xiaohongshu.com/user/profile/611f08ce00000000010046a3" target="_blank" rel="noopener noreferrer" class="inline-flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300">
                                 <iconify-icon icon="simple-icons:xiaohongshu" style="font-size: 1.25rem;"></iconify-icon>
                             </a>
                         </div>
@@ -431,56 +433,35 @@
                 
                 <div class="lg:col-span-2 bg-white rounded-xl shadow-md p-8">
                     <h3 class="text-xl font-bold mb-6">发送消息</h3>
-                    
-                    <form id="contactForm" 
-                        class="space-y-6" 
-                        action="https://formsubmit.co/8ec99ae18ee5db6ecbee51fa38c6768a" 
-                        method="POST">
-
-                        <!-- 禁用验证码 -->
+                    <form id="contactForm" class="space-y-6" action="https://formsubmit.co/ajax/8ec99ae18ee5db6ecbee51fa38c6768a" method="POST">
                         <input type="hidden" name="_captcha" value="false">
-
-                        <!-- 提交后不跳转页面 -->
-                        <input type="hidden" name="_next" value="">
+                        
+                        <input type="hidden" name="_subject" value="来自 GeoDataHub 的新留言">
 
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
                                 <label for="name" class="block text-sm font-medium text-gray-700 mb-2">昵称</label>
-                                <input type="text" id="name" name="name" 
-                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" 
-                                    placeholder="请输入您的昵称" required>
+                                <input type="text" id="name" name="name" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的昵称" required>
                             </div>
-                            
                             <div>
                                 <label for="email" class="block text-sm font-medium text-gray-700 mb-2">邮箱</label>
-                                <input type="email" id="email" name="email" 
-                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" 
-                                    placeholder="请输入您的邮箱(可选)">
+                                <input type="email" id="email" name="email" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的邮箱(可选)">
                             </div>
                         </div>
-                        
                         <div>
                             <label for="subject" class="block text-sm font-medium text-gray-700 mb-2">主题</label>
-                            <input type="text" id="subject" name="subject" 
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" 
-                                placeholder="请输入消息主题" required>
+                            <input type="text" id="subject" name="subject" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入消息主题" required>
                         </div>
-                        
                         <div>
                             <label for="message" class="block text-sm font-medium text-gray-700 mb-2">消息内容</label>
-                            <textarea id="message" name="message" rows="5" 
-                                    class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" 
-                                    placeholder="请输入您的消息内容" required></textarea>
+                            <textarea id="message" name="message" rows="5" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50" placeholder="请输入您的消息内容" required></textarea>
                         </div>
-                        
                         <div>
-                            <button type="submit" class="btn-primary px-8">
+                            <button type="submit" class="btn-primary px-8 py-3 rounded-lg shadow-md hover:shadow-lg transition-all font-bold">
                                 <i class="fa-solid fa-paper-plane mr-2"></i> 发送消息
                             </button>
                         </div>
                     </form>
-
-                    <!-- 反馈消息会插入到这里 -->
                     <div id="feedbackMessage" class="mt-4"></div>
                 </div>
             </div>
@@ -491,107 +472,29 @@
         <div class="container mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                 <div>
-                    <div class="flex items-center space-x-2 mb-6">
-                        <i class="fa-solid fa-globe text-2xl text-white"></i>
-                        <span class="text-xl font-bold">GeoDataHub</span>
-                    </div>
-                    <p class="text-gray-400 mb-6">
-                        地理大数据下载平台，提供全面、准确、及时的地理空间数据服务。
-                    </p>
+                    <div class="flex items-center space-x-2 mb-6"><i class="fa-solid fa-globe text-2xl text-white"></i><span class="text-xl font-bold">GeoDataHub</span></div>
+                    <p class="text-gray-400 mb-6">地理大数据下载平台，提供全面、准确、及时的地理空间数据服务。</p>
                     <div class="flex space-x-4">
-                        <a href="https://github.com/GISer2000" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            class="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary">
-                            <i class="fa-brands fa-github fa-lg"></i>
-                        </a>
-                        <a href="https://www.xiaohongshu.com/user/profile/611f08ce00000000010046a3"
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            class="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-primary hover:bg-primary hover:text-white transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-primary">
-                            <iconify-icon icon="simple-icons:xiaohongshu" style="font-size: 1.25rem;"></iconify-icon>
-                        </a>
+                        <a href="https://github.com/GISer2000" target="_blank" class="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-primary hover:bg-primary hover:text-white transition-colors"><i class="fa-brands fa-github fa-lg"></i></a>
+                        <a href="https://www.xiaohongshu.com/user/profile/611f08ce00000000010046a3" target="_blank" class="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-primary hover:bg-primary hover:text-white transition-colors"><iconify-icon icon="simple-icons:xiaohongshu" style="font-size: 1.25rem;"></iconify-icon></a>
                     </div>
-                    
-                    <!-- 这里是统计计数器 -->
-                    <div class="mt-4 mb-2 flex items-center">
-                        <span class="ml-2 text-sm text-gray-400">本站访问量：</span>
-                        <a href="https://www.hitwebcounter.com/" target="_blank">
-                            <img src="https://hitwebcounter.com/counter/counter.php?page=21456320&style=0006&nbdigits=6&type=page&initCount=0" 
-                                title="Free Tools" alt="Free Tools" border="0" />
-                        </a>
-                    </div>
+                    <div class="mt-4 mb-2 flex items-center"><span class="ml-2 text-sm text-gray-400">本站访问量：</span><a href="https://www.hitwebcounter.com/" target="_blank"><img src="https://hitwebcounter.com/counter/counter.php?page=21456320&style=0006&nbdigits=6&type=page&initCount=0" title="Free Tools" alt="Free Tools" border="0" /></a></div>
                 </div>
-                
-                <div>
-                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
-                    <ul class="space-y-3">
-                        <li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a></li>
-                        <li><a href="#datasets" class="text-gray-400 hover:text-white transition-colors">数据集</a></li>
-                        <li><a href="#features" class="text-gray-400 hover:text-white transition-colors">平台特性</a></li>
-                        <li><a href="#showcase" class="text-gray-400 hover:text-white transition-colors">数据展示</a></li>
-                        <li><a href="#download" class="text-gray-400 hover:text-white transition-colors">下载中心</a></li>
-                        <li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-bold mb-6">数据集分类</h4>
-                    <ul class="space-y-3">
-                        <li><a href="https://pan.baidu.com/s/14xmUagNpVNho-wNjMGBzig?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">微博签到数据</a></li>
-                        <li><a href="https://pan.baidu.com/s/13q0X7p_aLHFx3FGjfuVqXQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">POI数据</a></li>
-                        <li><a href="https://pan.baidu.com/s/1KwmXD3Y9WVDG7p0HMCSkNQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">AOI数据</a></li>
-                        <li><a href="https://pan.baidu.com/s/1nynMrnsT1tpsgcV7uYwgZA?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">轨迹数据</a></li>
-                        <li><a href="https://pan.baidu.com/s/1d_w0APT8knUqcrX5s4i46A?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">OD流数据</a></li>
-                        <li><a href="https://pan.baidu.com/s/11r502m5TGzajFLkWPZDtMg?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">建筑足迹数据</a></li>
-                        <li><a href="https://pan.baidu.com/s/1POlWO7QWvwMTwKR2NLrMvw?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">其他门类数据</a></li>
-                    </ul>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-bold mb-6">联系方式</h4>
-                    <ul class="space-y-3">
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-map-marker-alt text-gray-400 mt-1 mr-3"></i>
-                            <span class="text-gray-400">中国</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-envelope text-gray-400 mt-1 mr-3"></i>
-                            <span class="text-gray-400">2677430104@qq.com</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-phone text-gray-400 mt-1 mr-3"></i>
-                            <span class="text-gray-400">+86 10 8888 8888</span>
-                        </li>
-                        <li class="flex items-start">
-                            <i class="fa-solid fa-clock text-gray-400 mt-1 mr-3"></i>
-                            <span class="text-gray-400">周一至周五: 9:00 - 18:00</span>
-                        </li>
-                    </ul>
-                </div>
+                <div><h4 class="text-lg font-bold mb-6">快速链接</h4><ul class="space-y-3"><li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a></li><li><a href="#datasets" class="text-gray-400 hover:text-white transition-colors">数据集</a></li><li><a href="#features" class="text-gray-400 hover:text-white transition-colors">平台特性</a></li><li><a href="#download" class="text-gray-400 hover:text-white transition-colors">下载中心</a></li><li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li></ul></div>
+                <div><h4 class="text-lg font-bold mb-6">数据集分类</h4><ul class="space-y-3"><li><a href="https://pan.baidu.com/s/14xmUagNpVNho-wNjMGBzig?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">微博签到数据</a></li><li><a href="https://pan.baidu.com/s/13q0X7p_aLHFx3FGjfuVqXQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">POI数据</a></li><li><a href="https://pan.baidu.com/s/1KwmXD3Y9WVDG7p0HMCSkNQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">AOI数据</a></li><li><a href="https://pan.baidu.com/s/1nynMrnsT1tpsgcV7uYwgZA?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">轨迹数据</a></li><li><a href="https://pan.baidu.com/s/1d_w0APT8knUqcrX5s4i46A?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">OD流数据</a></li><li><a href="https://pan.baidu.com/s/11r502m5TGzajFLkWPZDtMg?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">建筑足迹数据</a></li><li><a href="https://pan.baidu.com/s/1POlWO7QWvwMTwKR2NLrMvw?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">其他门类数据</a></li></ul></div>
+                <div><h4 class="text-lg font-bold mb-6">联系方式</h4><ul class="space-y-3"><li class="flex items-start"><i class="fa-solid fa-map-marker-alt text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">中国</span></li><li class="flex items-start"><i class="fa-solid fa-envelope text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">2677430104@qq.com</span></li><li class="flex items-start"><i class="fa-solid fa-phone text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">+86 10 8888 8888</span></li><li class="flex items-start"><i class="fa-solid fa-clock text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">周一至周五: 9:00 - 18:00</span></li></ul></div>
             </div>
-            
-            <div class="border-t border-gray-800 pt-8">
-                <div class="flex flex-col md:flex-row md:justify-between items-center">
-                    <p class="text-gray-400 text-sm mb-4 md:mb-0">
-                        &copy; 2025 地理大数据下载平台. 保留所有权利.
-                    </p>
-                    <div class="flex space-x-6">
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">隐私政策</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">使用条款</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">数据服务协议</a>
-                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">帮助中心</a>
-                    </div>
-                </div>
-            </div>
+            <div class="border-t border-gray-800 pt-8"><div class="flex flex-col md:flex-row md:justify-between items-center"><p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2025 地理大数据下载平台. 保留所有权利.</p><div class="flex space-x-6"><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">隐私政策</a><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">使用条款</a><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">数据服务协议</a><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">帮助中心</a></div></div></div>
         </div>
     </footer>
 
+
     <script src="js/datasets-loader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/other.js"></script>
-    <script src="js/map.js"></script>
     <script src="js/dynamic-renderer.js"></script>
     <script src="js/submit.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/chart.js"></script>
+    
 </body>
 </html>
