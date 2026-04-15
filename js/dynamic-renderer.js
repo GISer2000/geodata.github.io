@@ -79,7 +79,6 @@ function scrollToDataSection() {
     }
 }
 
-// 筛选按钮 (1秒旋转)
 window.applyFilters = function() {
     const btnIcon = filterButton.querySelector('i');
     filterButton.disabled = true;
@@ -99,14 +98,11 @@ window.applyFilters = function() {
             const mCity = !sCity || item.city === sCity;
             const mTime = !sTime || isYearInRange(item.updateTime, sTime);
 
-            // 优化搜索逻辑
             const mSearch = !searchTerm || (
                 (item.title || "").toLowerCase().includes(searchTerm) || 
                 (item.description || "").toLowerCase().includes(searchTerm) ||
                 (item.city || "").toLowerCase().includes(searchTerm) ||
-                // 新增：匹配数据提供商（如：高德地图）
                 (item.provider || "").toLowerCase().includes(searchTerm) ||
-                // 新增：匹配标签数组
                 (Array.isArray(item.tags) && item.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
             );
 
@@ -115,6 +111,11 @@ window.applyFilters = function() {
 
         window.currentPage = 1;
         window.renderDatasets();
+        
+        // 恢复按钮和隐藏 loading
+        filterButton.disabled = false;
+        if (btnIcon) btnIcon.classList.remove('fa-spin');
+        loadingOverlay.classList.add('hidden');
         
     }, 1000); 
 };
