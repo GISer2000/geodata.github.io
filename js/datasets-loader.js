@@ -123,5 +123,3 @@ function getDisplayName(type) {
 
 // 页面加载完成后开始加载数据
 document.addEventListener('DOMContentLoaded', loadAllDatasets);
-
-console.log('数据加载功能已加载');

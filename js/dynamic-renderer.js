@@ -98,15 +98,24 @@ window.applyFilters = function() {
             const mLevel = !sLevel || item.level === sLevel;
             const mCity = !sCity || item.city === sCity;
             const mTime = !sTime || isYearInRange(item.updateTime, sTime);
-            const mSearch = !searchTerm || (item.title||"").toLowerCase().includes(searchTerm) || (item.city||"").toLowerCase().includes(searchTerm) || (item.description||"").toLowerCase().includes(searchTerm);
+
+            // 优化搜索逻辑
+            const mSearch = !searchTerm || (
+                (item.title || "").toLowerCase().includes(searchTerm) || 
+                (item.description || "").toLowerCase().includes(searchTerm) ||
+                (item.city || "").toLowerCase().includes(searchTerm) ||
+                // 新增：匹配数据提供商（如：高德地图）
+                (item.provider || "").toLowerCase().includes(searchTerm) ||
+                // 新增：匹配标签数组
+                (Array.isArray(item.tags) && item.tags.some(tag => tag.toLowerCase().includes(searchTerm)))
+            );
+
             return mType && mLevel && mCity && mTime && mSearch;
         });
 
         window.currentPage = 1;
         window.renderDatasets();
-        if (btnIcon) btnIcon.classList.remove('fa-spin');
-        filterButton.disabled = false;
-        loadingOverlay.classList.add('hidden');
+        
     }, 1000); 
 };
 

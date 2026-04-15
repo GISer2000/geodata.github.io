@@ -232,42 +232,49 @@
                 <h2 class="text-[clamp(1.5rem,3vw,2.5rem)] font-bold mb-4">数据资源总览</h2>
                 <p class="text-gray-600 max-w-2xl mx-auto">平台收录的数据集类型、地区覆盖与关键指标</p>
             </div>
+            
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                <!-- 统计卡片左侧: 关键指标 -->
-                <div class="bg-gray-50 rounded-xl shadow-md p-6">
-                    <h3 class="text-xl font-bold mb-5 flex items-center"><i class="fa-solid fa-chart-simple text-primary mr-2"></i> 核心指标</h3>
-                    <div class="grid grid-cols-2 gap-6">
-                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
-                            <div class="text-3xl font-bold text-primary mb-2">45+</div>
-                            <div class="text-gray-600 text-sm">数据集总数</div>
-                        </div>
-                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
-                            <div class="text-3xl font-bold text-primary mb-2">全国</div>
-                            <div class="text-gray-600 text-sm">覆盖省市</div>
-                        </div>
-                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
-                            <div class="text-3xl font-bold text-primary mb-2">7</div>
-                            <div class="text-gray-600 text-sm">数据类别</div>
-                        </div>
-                        <div class="bg-white p-5 rounded-lg shadow-sm text-center">
-                            <div class="text-3xl font-bold text-primary mb-2">2025</div>
-                            <div class="text-gray-600 text-sm">最新更新年份</div>
+                <div class="bg-gray-50 rounded-xl shadow-md p-6 flex flex-col justify-between">
+                    <div>
+                        <h3 class="text-xl font-bold mb-5 flex items-center"><i class="fa-solid fa-chart-simple text-primary mr-2"></i> 核心指标</h3>
+                        <div class="grid grid-cols-2 gap-6">
+                            <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                                <div class="text-3xl font-bold text-primary mb-2">45+</div>
+                                <div class="text-gray-600 text-sm">数据集总数</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                                <div class="text-3xl font-bold text-primary mb-2">全国</div>
+                                <div class="text-gray-600 text-sm">覆盖省市</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                                <div class="text-3xl font-bold text-primary mb-2">7</div>
+                                <div class="text-gray-600 text-sm">数据类别</div>
+                            </div>
+                            <div class="bg-white p-5 rounded-lg shadow-sm text-center">
+                                <div class="text-3xl font-bold text-primary mb-2">2025</div>
+                                <div class="text-gray-600 text-sm">最新更新年份</div>
+                            </div>
                         </div>
                     </div>
                     <div class="mt-6 p-4 bg-primary/5 rounded-lg">
                         <p class="text-gray-700 text-sm"><i class="fa-solid fa-circle-info text-primary mr-2"></i>所有数据集均经过整理，提供百度网盘链接，持续扩充中。</p>
                     </div>
                 </div>
-                <!-- 右侧：数据类型分布图表 (Chart.js) -->
+
                 <div class="bg-gray-50 rounded-xl shadow-md p-6">
-                    <h3 class="text-xl font-bold mb-4 flex items-center"><i class="fa-solid fa-chart-pie text-primary mr-2"></i> 数据类型分布</h3>
-                    <div class="h-64">
-                        <canvas id="dataTypeChart"></canvas>
+                    <h3 class="text-xl font-bold mb-5 flex items-center"><i class="fa-solid fa-pie-chart text-primary mr-2"></i> 类别分布统计</h3>
+                    
+                    <div class="bg-white p-4 rounded-lg shadow-sm flex flex-col sm:flex-row items-center justify-around h-[calc(100%-3rem)]">
+                        <div class="w-full sm:w-1/2" style="position: relative; height: 220px;">
+                            <canvas id="dataTypePieChart"></canvas>
+                        </div>
+                        <div class="w-full sm:w-1/2 mt-4 sm:mt-0" style="position: relative; height: 220px;">
+                            <canvas id="dataTypeBarChart"></canvas>
+                        </div>
                     </div>
-                    <p class="text-gray-500 text-xs text-center mt-4">基于当前数据集分类统计</p>
                 </div>
             </div>
-            <!-- 额外说明：数据更新动态 -->
+
             <div class="mt-10 text-center bg-white p-6 rounded-xl shadow-sm border border-gray-100">
                 <div class="flex justify-center items-center space-x-2 text-primary mb-2">
                     <i class="fa-solid fa-cloud-upload-alt text-2xl"></i>
@@ -277,6 +284,7 @@
             </div>
         </div>
     </section>
+
 
     <!-- 数据集下载中心 -->
     <section id="download" class="section-padding bg-gray-50">
@@ -292,7 +300,7 @@
                     <div class="relative">
                         <input type="text" 
                             id="searchInput" 
-                            placeholder="🔍 搜索数据集名称、城市或关键词..." 
+                            placeholder="搜索数据集名称、城市或关键词..." 
                             class="w-full p-4 pl-12 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary transition-all">
                         <i class="fa-solid fa-search absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 text-lg"></i>
                         <button id="clearSearchBtn" 
@@ -478,13 +486,101 @@
                         <a href="https://github.com/GISer2000" target="_blank" class="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-primary hover:bg-primary hover:text-white transition-colors"><i class="fa-brands fa-github fa-lg"></i></a>
                         <a href="https://www.xiaohongshu.com/user/profile/611f08ce00000000010046a3" target="_blank" class="inline-flex items-center justify-center w-10 h-10 bg-gray-100 rounded-full text-primary hover:bg-primary hover:text-white transition-colors"><iconify-icon icon="simple-icons:xiaohongshu" style="font-size: 1.25rem;"></iconify-icon></a>
                     </div>
-                    <div class="mt-4 mb-2 flex items-center"><span class="ml-2 text-sm text-gray-400">本站访问量：</span><a href="https://www.hitwebcounter.com/" target="_blank"><img src="https://hitwebcounter.com/counter/counter.php?page=21456320&style=0006&nbdigits=6&type=page&initCount=0" title="Free Tools" alt="Free Tools" border="0" /></a></div>
+                    <div class="mt-4 mb-2 flex items-center">
+                        <span class="ml-2 text-sm text-gray-400">本站访问量：</span>
+                        <a href="https://www.hitwebcounter.com/" target="_blank">
+                            <img src="https://hitwebcounter.com/counter/counter.php?page=21456320&style=0006&nbdigits=6&type=page&initCount=0" title="Free Tools" alt="Free Tools" border="0" />
+                        </a>
+                    </div>
                 </div>
-                <div><h4 class="text-lg font-bold mb-6">快速链接</h4><ul class="space-y-3"><li><a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a></li><li><a href="#datasets" class="text-gray-400 hover:text-white transition-colors">数据集</a></li><li><a href="#features" class="text-gray-400 hover:text-white transition-colors">平台特性</a></li><li><a href="#download" class="text-gray-400 hover:text-white transition-colors">下载中心</a></li><li><a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a></li></ul></div>
-                <div><h4 class="text-lg font-bold mb-6">数据集分类</h4><ul class="space-y-3"><li><a href="https://pan.baidu.com/s/14xmUagNpVNho-wNjMGBzig?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">微博签到数据</a></li><li><a href="https://pan.baidu.com/s/13q0X7p_aLHFx3FGjfuVqXQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">POI数据</a></li><li><a href="https://pan.baidu.com/s/1KwmXD3Y9WVDG7p0HMCSkNQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">AOI数据</a></li><li><a href="https://pan.baidu.com/s/1nynMrnsT1tpsgcV7uYwgZA?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">轨迹数据</a></li><li><a href="https://pan.baidu.com/s/1d_w0APT8knUqcrX5s4i46A?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">OD流数据</a></li><li><a href="https://pan.baidu.com/s/11r502m5TGzajFLkWPZDtMg?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">建筑足迹数据</a></li><li><a href="https://pan.baidu.com/s/1POlWO7QWvwMTwKR2NLrMvw?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">其他门类数据</a></li></ul></div>
-                <div><h4 class="text-lg font-bold mb-6">联系方式</h4><ul class="space-y-3"><li class="flex items-start"><i class="fa-solid fa-map-marker-alt text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">中国</span></li><li class="flex items-start"><i class="fa-solid fa-envelope text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">2677430104@qq.com</span></li><li class="flex items-start"><i class="fa-solid fa-phone text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">+86 10 8888 8888</span></li><li class="flex items-start"><i class="fa-solid fa-clock text-gray-400 mt-1 mr-3"></i><span class="text-gray-400">周一至周五: 9:00 - 18:00</span></li></ul></div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">快速链接</h4>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="#home" class="text-gray-400 hover:text-white transition-colors">首页</a>
+                        </li>
+                        <li>
+                            <a href="#datasets" class="text-gray-400 hover:text-white transition-colors">数据集</a>
+                        </li>
+                        <li>
+                            <a href="#features" class="text-gray-400 hover:text-white transition-colors">平台特性</a>
+                        </li>
+                        <li>
+                            <a href="#download" class="text-gray-400 hover:text-white transition-colors">下载中心</a>
+                        </li>
+                        <li>
+                            <a href="#contact" class="text-gray-400 hover:text-white transition-colors">联系我们</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">数据集分类</h4>
+                    <ul class="space-y-3">
+                        <li>
+                            <a href="https://pan.baidu.com/s/14xmUagNpVNho-wNjMGBzig?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">微博签到数据</a>
+                        </li>
+                        <li>
+                            <a href="https://pan.baidu.com/s/13q0X7p_aLHFx3FGjfuVqXQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">POI数据</a>
+                        </li>
+                        <li>
+                            <a href="https://pan.baidu.com/s/1KwmXD3Y9WVDG7p0HMCSkNQ?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">AOI数据</a>
+                        </li>
+                        <li>
+                            <a href="https://pan.baidu.com/s/1nynMrnsT1tpsgcV7uYwgZA?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">轨迹数据</a>
+                        </li>
+                        <li>
+                            <a href="https://pan.baidu.com/s/1d_w0APT8knUqcrX5s4i46A?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">OD流数据</a>
+                        </li>
+                        <li>
+                            <a href="https://pan.baidu.com/s/11r502m5TGzajFLkWPZDtMg?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">建筑足迹数据</a>
+                        </li>
+                        <li>
+                            <a href="https://pan.baidu.com/s/1POlWO7QWvwMTwKR2NLrMvw?pwd=1111" target="_blank" class="text-gray-400 hover:text-white transition-colors">其他门类数据</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-bold mb-6">联系方式</h4>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-map-marker-alt text-gray-400 mt-1 mr-3"></i>
+                            <span class="text-gray-400">中国</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-envelope text-gray-400 mt-1 mr-3"></i>
+                            <span class="text-gray-400">2677430104@qq.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-phone text-gray-400 mt-1 mr-3"></i>
+                            <span class="text-gray-400">+86 10 8888 8888</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fa-solid fa-clock text-gray-400 mt-1 mr-3"></i>
+                            <span class="text-gray-400">周一至周五: 9:00 - 18:00</span>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <div class="border-t border-gray-800 pt-8"><div class="flex flex-col md:flex-row md:justify-between items-center"><p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2025 地理大数据下载平台. 保留所有权利.</p><div class="flex space-x-6"><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">隐私政策</a><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">使用条款</a><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">数据服务协议</a><a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">帮助中心</a></div></div></div>
+            <div class="border-t border-gray-800 pt-8">
+                <div class="flex flex-col md:flex-row md:justify-between items-center">
+                    <p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2025 地理大数据下载平台. 保留所有权利.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">隐私政策</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">使用条款</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">数据服务协议</a>
+                        <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">帮助中心</a>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 pt-8"><div class="flex flex-col md:flex-row md:justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">&copy; 2026 地理大数据下载平台. 保留所有权利.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">隐私政策</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">使用条款</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">数据服务协议</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm transition-colors">帮助中心</a>
+                </div>
+            </div></div>
         </div>
     </footer>
 
