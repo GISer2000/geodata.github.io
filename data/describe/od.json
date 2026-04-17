@@ -49,5 +49,22 @@
     "url": "https://pan.baidu.com/s/17eTvsBov9aOzCL4OEH_3rQ?pwd=1111",
     "level": "国家级",
     "city": "全国"
+  },
+  {
+    "id": "od-3",
+    "title": "全国百度迁徙数据",
+    "type": "OD流",
+    "description": "百度平台统计的城市间人口流动信息，覆盖全国所有地级市，2020-01-01~2022-04-21，约60万条记录",
+    "status": "已验证",
+    "size": "200.0MB",
+    "updateTime": "2022",
+    "provider": "百度地图",
+    "tags": ["空间相互作用", "引力模型", "流动空间", "时空行为"],
+    "formats": ["CSV"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1MxCLZY4y2DJDv-VD9_7nlw?pwd=1111",
+    "level": "国家级",
+    "city": "全国"
   }
 ]
