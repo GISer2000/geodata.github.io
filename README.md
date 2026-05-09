@@ -62,4 +62,3 @@ python -m http.server 8000
 
 - **前端框架**：Tailwind CSS，用于快速构建美观的用户界面。
 - **图表库**：Chart.js，可用于数据可视化展示。
-- **地图库**：OpenLayers，提供地图可视化功能。
