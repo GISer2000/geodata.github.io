@@ -234,7 +234,7 @@ function setupPagination() {
 }
 
 async function init() {
-    const files = ['weibo', 'poi', 'aoi', 'trajectory', 'od', 'building', 'other'].map(f => `data/describe/${f}.json`);
+    const files = ['weibo', 'poi', 'aoi', 'trajectory', 'od', 'building', 'house', 'other'].map(f => `data/describe/${f}.json`);
     const res = await Promise.all(files.map(f => fetch(f).then(r => r.json())));
     window.allDatasets = [].concat(...res);
     window.filteredDatasets = [...window.allDatasets];

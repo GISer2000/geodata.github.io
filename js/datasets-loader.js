@@ -6,6 +6,7 @@ const dataTypes = [
     { type: '轨迹数据', file: 'data/describe/trajectory.json', image: 'fig/trajectory.png' },
     { type: 'OD数据', file: 'data/describe/od.json', image: 'fig/od.png' },
     { type: '建筑数据', file: 'data/describe/building.json', image: 'fig/building.png' },
+    { type: '房价数据', file: 'data/describe/house.json', image: 'fig/house.png' },
     { type: '其他数据', file: 'data/describe/other.json', image: 'fig/other.png' }
 ];
 
@@ -17,6 +18,7 @@ const dataTypeDescriptions = {
     '轨迹数据': '包含出租车、共享单车等多源轨迹数据，反映城市人群移动模式与交通特征。',
     'OD数据': '包含城市区域间的人口流动数据，用于城市区域联系强度分析与区域协同发展研究。',
     '建筑数据': '包含城市建筑轮廓和高度信息，用于城市形态分析与三维城市建模。',
+    '房价数据': '包含各类住宅价格信息，用于城市房地产市场分析与投资决策。',
     '其他数据': '主要包含一些未分类数据，除了空间数据之外，还有一些没有位置信息的结构化数据。'
 };
 
@@ -115,6 +117,7 @@ function getDisplayName(type) {
         '轨迹数据': '移动轨迹数据',
         'OD数据': 'OD流数据',
         '建筑数据': '建筑足迹数据',
+        '房价数据': '房价信息数据',
         '其他数据': '其他门类数据'
     };
     
