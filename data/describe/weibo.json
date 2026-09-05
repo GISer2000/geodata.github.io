@@ -169,8 +169,25 @@
     "level": "市级",
     "city": "重庆市"
   },
-  {
+    {
     "id": "weibo-10",
+    "title": "广州市微博签到数据",
+    "type": "微博签到",
+    "description": "包含广州市的微博用户签到信息，约220万条记录",
+    "status": "已验证",
+    "size": "342.61MB",
+    "updateTime": "2025",
+    "provider": "新浪微博",
+    "tags": ["微博数据", "社交网络", "城市活动", "时空分布"],
+    "formats": ["CSV"],
+    "isDownloadable": true,
+    "isVerified": true,
+    "url": "https://pan.baidu.com/s/1LB1lvyfyC4owUg2fi18EZg?pwd=1111",
+    "level": "市级",
+    "city": "广州市"
+  },
+  {
+    "id": "weibo-11",
     "title": "全国历史微博签到数据",
     "type": "微博签到",
     "description": "包含全国超千万微博用户的签到信息，约4400万条记录",
